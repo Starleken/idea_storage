@@ -1,0 +1,20 @@
+spring:
+  application:
+     name: idea_storage
+  jpa:
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/idea_storage
+    username: idea_boss
+    password: 777888999
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  liquibase:
+    enabled: true
+    url: jdbc:mysql://127.0.0.1:3306/idea_storage
+    change-log: classpath:db/changelog/master.yml
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    user: idea_boss
+    password: 777888999
+  docker:
+    compose:
+      file: main-service/compose.yaml

@@ -1,0 +1,194 @@
+databaseChangeLog:
+  - changeSet:
+      id: initialize
+      author: betrayal
+      changes:
+        - createTable:
+            tableName: projects
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(80)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: idea
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: short_description
+                  type: VARCHAR(500)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: full_description
+                  type: VARCHAR(10000)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: reason_purchase
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expired_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: finished_at
+                  type: DATETIME
+                  constraints:
+                    nullable: true
+              - column:
+                  name: is_visible
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: technologies
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(30)
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: projects_technologies
+            columns:
+              - column:
+                  name: project_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_technologies_projects_projects
+                    references: projects(id)
+              - column:
+                  name: technology_id
+                  type: INT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_technologies_projects_technologies
+                    references: technologies(id)
+        - addPrimaryKey:
+            tableName: projects_technologies
+            columnNames: project_id,technology_id
+            constraintName: pk_projects_technologies
+        - createTable:
+            tableName: related_projects
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: project_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_related_projects_projects
+                    references: projects(id)
+              - column:
+                  name: name
+                  type: VARCHAR(40)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: link
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_moderated
+                  type: BOOLEAN
+                  constraints:
+                    nullable: true
+              - column:
+                  name: strong_side
+                  type: VARCHAR(500)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: weak_side
+                  type: VARCHAR(500)
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: hot_keys
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: project_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_hot_keys_projects
+                    references: projects(id)
+        - createTable:
+            tableName: fragments
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: picture
+                  type: VARCHAR(500)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(2000)
+                  constraints:
+                    nullable: false
+
+
+
+
+
+
+
+
+
