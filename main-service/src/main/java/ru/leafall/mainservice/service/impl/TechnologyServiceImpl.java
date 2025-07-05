@@ -7,10 +7,10 @@ import ru.leafall.mainservice.entity.TechnologyEntity;
 import ru.leafall.mainservice.mapper.TechnologyMapper;
 import ru.leafall.mainservice.repository.TechnologyRepository;
 import ru.leafall.mainservice.service.TechnologyService;
-import ru.leafall.mainservice.utils.ThrowableUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.leafall.mainstarter.utils.ThrowableUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;

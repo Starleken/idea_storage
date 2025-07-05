@@ -1,10 +1,9 @@
-package ru.leafall.mainservice.utils;
+package ru.leafall.mainstarter.utils;
 
-import ru.leafall.mainservice.exception.BadRequestException;
-import ru.leafall.mainservice.exception.NotFoundException;
+import ru.leafall.mainstarter.exception.BadRequestException;
+import ru.leafall.mainstarter.exception.NotFoundException;
 
 public class ThrowableUtils {
-
     public static NotFoundException getNotFoundException() {
         return new NotFoundException();
     }

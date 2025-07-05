@@ -1,4 +1,4 @@
-package ru.leafall.mainservice.exception;
+package ru.betrayal.fileservice.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -14,30 +14,30 @@ import ru.leafall.mainstarter.exception.NotFoundException;
 @Slf4j
 public class ExceptionProvider {
 
-    @ExceptionHandler({BadRequestException.class})
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorDto> handleException(Exception ex) {
+        return handle(ex, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ErrorDto> handleException(BadRequestException ex) {
         return handle(ex, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({MethodArgumentNotValidException.class})
-    public ResponseEntity<ErrorDto> handleException(MethodArgumentNotValidException ex) {
-        return handle(ex, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler({NotFoundException.class})
+    @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorDto> handleException(NotFoundException ex) {
         return handle(ex, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({Exception.class})
-    public ResponseEntity<ErrorDto> handleException(Exception ex) {
-        return handle(ex, HttpStatus.INTERNAL_SERVER_ERROR);
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorDto> handleException(MethodArgumentNotValidException ex) {
+        return handle(ex, HttpStatus.BAD_REQUEST);
     }
+
 
     private ResponseEntity<ErrorDto> handle(Exception ex, HttpStatus status) {
         log.error(ex.getMessage());
         var error = ErrorDto.builder().statusCode(status.value()).message(ex.getMessage()).build();
         return new ResponseEntity<>(error, status);
     }
-
 }

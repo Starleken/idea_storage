@@ -1,4 +1,4 @@
-package ru.leafall.mainservice.exception;
+package ru.leafall.mainstarter.exception;
 
 public class BadRequestException extends RuntimeException {
 

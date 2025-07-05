@@ -8,10 +8,10 @@ import ru.leafall.mainservice.entity.FragmentEntity;
 import ru.leafall.mainservice.mapper.FragmentMapper;
 import ru.leafall.mainservice.repository.FragmentRepository;
 import ru.leafall.mainservice.service.FragmentService;
-import ru.leafall.mainservice.utils.ThrowableUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.leafall.mainstarter.utils.ThrowableUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
