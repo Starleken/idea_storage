@@ -1,0 +1,9 @@
+services:
+  postgresql:
+    image: 'postgres:16.2'
+    environment:
+      - 'POSTGRES_PASSWORD=files_base'
+      - 'POSTGRES_USER=file_storage'
+      - 'POSTGRES_DB=files_base'
+    ports:
+      - '5432'
