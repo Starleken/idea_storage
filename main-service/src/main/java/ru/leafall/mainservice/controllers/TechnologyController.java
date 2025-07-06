@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.leafall.mainstarter.utils.PaginationParams;
 
 import java.util.List;
 
@@ -20,9 +21,14 @@ public class TechnologyController {
     private final TechnologyService service;
 
     @GetMapping
-    public ResponseEntity<List<TechnologyFullDto>> findAll() {
-        List<TechnologyFullDto> dtos = service.findAll();
-        return ResponseEntity.ok(dtos);
+    public ResponseEntity<List<TechnologyFullDto>> findAll(
+            @RequestParam(name = PaginationParams.LIMIT, defaultValue = "10") Integer limit,
+            @RequestParam(name = PaginationParams.PAGE, defaultValue = "0") Integer page
+    ) {
+        var result = service.findAll(new PaginationParams(limit, page));
+        return ResponseEntity.ok()
+                .header(PaginationParams.HEADER_TOTAL_COUNT, result.totalCount().toString())
+                .body(result.items());
     }
 
     @GetMapping("{id}")

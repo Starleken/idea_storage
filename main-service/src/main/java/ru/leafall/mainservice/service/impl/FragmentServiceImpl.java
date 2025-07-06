@@ -1,5 +1,8 @@
 package ru.leafall.mainservice.service.impl;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import ru.leafall.fileservicestarter.service.FileService;
 import ru.leafall.mainservice.dto.fragment.FragmentCreateDto;
 import ru.leafall.mainservice.dto.fragment.FragmentFullDto;
 import ru.leafall.mainservice.dto.fragment.FragmentShortDto;
@@ -11,10 +14,11 @@ import ru.leafall.mainservice.service.FragmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.leafall.mainstarter.utils.PaginationParams;
+import ru.leafall.mainstarter.utils.PaginationResponse;
 import ru.leafall.mainstarter.utils.ThrowableUtils;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -22,12 +26,16 @@ public class FragmentServiceImpl implements FragmentService {
 
     private final FragmentMapper mapper;
     private final FragmentRepository repository;
+    private final FileService fileService;
 
     @Override
     @Transactional(readOnly = true)
-    public List<FragmentShortDto> findAllByProjectId(Long projectId) {
-        List<FragmentEntity> fragments = repository.findAllByProjectId(projectId);
-        return fragments.stream().map(mapper::mapToShortDto).collect(Collectors.toList());
+    public PaginationResponse<FragmentShortDto> findAllByProjectId(Long projectId, PaginationParams params) {
+        Sort sort = Sort.by("id").ascending();
+        var pageable = PageRequest.of(params.limit(), params.page(), sort);
+        var fragments = repository.findAllByProjectId(projectId, pageable);
+        var result = fragments.map(mapper::mapToShortDto);
+        return new PaginationResponse<>(result.getContent(), fragments.getTotalElements());
     }
 
     @Override
@@ -42,6 +50,8 @@ public class FragmentServiceImpl implements FragmentService {
     @Transactional
     public FragmentShortDto create(FragmentCreateDto dto) {
         FragmentEntity fragment = mapper.mapToEntity(dto);
+        var picture = fileService.upload(dto.getPicture());
+        fragment.setPicture(picture.getId().toString());
         FragmentEntity savedFragment = repository.save(fragment);
         return mapper.mapToShortDto(savedFragment);
     }
@@ -60,6 +70,7 @@ public class FragmentServiceImpl implements FragmentService {
     public Long delete(Long id) {
         FragmentEntity fragment = findByIdOrThrowNotFoundException(id);
         repository.delete(fragment);
+        fileService.delete(UUID.fromString(fragment.getPicture()));
         return id;
     }
 
