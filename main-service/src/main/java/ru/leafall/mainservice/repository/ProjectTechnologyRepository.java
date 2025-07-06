@@ -1,5 +1,7 @@
 package ru.leafall.mainservice.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import ru.leafall.mainservice.entity.ProjectTechnologyEntity;
 import ru.leafall.mainservice.entity.primarykeys.ProjectTechnologyPK;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,5 +15,5 @@ import java.util.List;
 public interface ProjectTechnologyRepository extends JpaRepository<ProjectTechnologyEntity, ProjectTechnologyPK> {
 
     @Query(value = "SELECT p FROM ProjectTechnologyEntity p WHERE p.id.project.id = ?1", nativeQuery = false)
-    List<ProjectTechnologyEntity> findAllByProjectId(Long projectId);
+    Page<ProjectTechnologyEntity> findAllByProjectId(Long projectId, PageRequest request);
 }

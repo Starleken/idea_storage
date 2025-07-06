@@ -8,8 +8,10 @@ import ru.leafall.mainservice.dto.fragment.FragmentFullDto;
 import ru.leafall.mainservice.dto.fragment.FragmentShortDto;
 import ru.leafall.mainservice.dto.fragment.FragmentUpdateDto;
 import ru.leafall.mainservice.entity.FragmentEntity;
+import ru.leafall.mainservice.entity.ProjectEntity;
 import ru.leafall.mainservice.mapper.FragmentMapper;
 import ru.leafall.mainservice.repository.FragmentRepository;
+import ru.leafall.mainservice.repository.ProjectRepository;
 import ru.leafall.mainservice.service.FragmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ public class FragmentServiceImpl implements FragmentService {
 
     private final FragmentMapper mapper;
     private final FragmentRepository repository;
+    private final ProjectRepository projectRepository;
     private final FileService fileService;
 
     @Override
@@ -49,10 +52,12 @@ public class FragmentServiceImpl implements FragmentService {
     @Override
     @Transactional
     public FragmentShortDto create(FragmentCreateDto dto) {
-        FragmentEntity fragment = mapper.mapToEntity(dto);
+        var project = findProjectOrThrowNotFoundException(dto.getProjectId());
+        var fragment = mapper.mapToEntity(dto);
         var picture = fileService.upload(dto.getPicture());
         fragment.setPicture(picture.getId().toString());
-        FragmentEntity savedFragment = repository.save(fragment);
+        fragment.setProject(project);
+        var savedFragment = repository.save(fragment);
         return mapper.mapToShortDto(savedFragment);
     }
 
@@ -77,6 +82,12 @@ public class FragmentServiceImpl implements FragmentService {
     private FragmentEntity findByIdOrThrowNotFoundException(Long id) {
         return repository.findById(id).orElseThrow(()->
                 ThrowableUtils.getNotFoundException("Fragment with id %d is not found", id)
+        );
+    }
+
+    private ProjectEntity findProjectOrThrowNotFoundException(Long id) {
+        return projectRepository.findById(id).orElseThrow(() ->
+                ThrowableUtils.getNotFoundException("Project with id is not found", id)
         );
     }
 }

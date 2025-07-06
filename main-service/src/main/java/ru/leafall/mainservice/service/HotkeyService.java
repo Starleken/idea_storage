@@ -15,5 +15,5 @@ public interface HotkeyService {
     HotkeyShortDto create(HotkeyCreateDto dto);
     List<HotkeyShortDto> create(List<HotkeyCreateDto> dto);
     HotkeyShortDto update(HotkeyUpdateDto dto);
-    HotkeyUpdateDto delete(Long id);
+    Long delete(Long id);
 }

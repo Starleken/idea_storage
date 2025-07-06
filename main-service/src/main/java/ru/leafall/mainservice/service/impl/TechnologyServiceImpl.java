@@ -47,6 +47,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     @Transactional
     public TechnologyFullDto create(TechnologyCreateDto dto) {
         TechnologyEntity technology = mapper.mapToEntity(dto);
+        technology.setName(technology.getName().toLowerCase().trim());
         TechnologyEntity saved = repository.save(technology);
         return mapper.mapToFullDto(saved);
     }
