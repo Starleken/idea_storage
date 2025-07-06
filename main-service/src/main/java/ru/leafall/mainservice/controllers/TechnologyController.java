@@ -1,5 +1,6 @@
 package ru.leafall.mainservice.controllers;
 
+import jakarta.validation.constraints.Min;
 import ru.leafall.mainservice.dto.technology.TechnologyCreateDto;
 import ru.leafall.mainservice.dto.technology.TechnologyFullDto;
 import ru.leafall.mainservice.dto.technology.TechnologyUpdateDto;
@@ -22,8 +23,8 @@ public class TechnologyController {
 
     @GetMapping
     public ResponseEntity<List<TechnologyFullDto>> findAll(
-            @RequestParam(name = PaginationParams.LIMIT, defaultValue = "10") Integer limit,
-            @RequestParam(name = PaginationParams.PAGE, defaultValue = "0") Integer page
+            @RequestParam(name = PaginationParams.LIMIT, defaultValue = "10") @Min(0) Integer limit,
+            @RequestParam(name = PaginationParams.PAGE, defaultValue = "1") @Min(1) Integer page
     ) {
         var result = service.findAll(new PaginationParams(limit, page));
         return ResponseEntity.ok()

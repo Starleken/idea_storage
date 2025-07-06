@@ -39,6 +39,7 @@ public class ProjectTechnologyServiceImpl implements ProjectTechnologyService {
         for (var item: items) {
             result.getTechnologies().add(item.getId().getTechnology().getName());
         }
+        result.setTotalCount(items.getTotalElements());
         return result;
     }
 
@@ -47,7 +48,7 @@ public class ProjectTechnologyServiceImpl implements ProjectTechnologyService {
     public ProjectTechnologyShortDto create(ProjectTechnologyCreateDto dto) {
         var project = findProjectOrThrowNotFoundException(dto.getProjectId());
         TechnologyEntity technology;
-        var optionalTechnology = technologyRepository.findByName(dto.getTechnology());
+        var optionalTechnology = technologyRepository.findByName(dto.getTechnology().toLowerCase().trim());
 
         if(optionalTechnology.isEmpty()) {
             var newTechnology = new TechnologyEntity();
@@ -59,8 +60,10 @@ public class ProjectTechnologyServiceImpl implements ProjectTechnologyService {
         var key = new ProjectTechnologyPK();
         key.setProject(project);
         key.setTechnology(technology);
-        ProjectTechnologyEntity technologyEntity = new ProjectTechnologyEntity();
+
+        var technologyEntity = new ProjectTechnologyEntity();
         technologyEntity.setId(key);
+
         repository.save(technologyEntity);
         var result = new ProjectTechnologyShortDto();
         result.setTechnologyId(technology.getId());

@@ -14,4 +14,5 @@ import java.util.List;
 public class ProjectTechnologiesDto {
     private Long projectId;
     private List<String> technologies;
+    private Long totalCount;
 }
