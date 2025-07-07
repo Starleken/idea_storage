@@ -25,7 +25,7 @@ public class FragmentController {
 
     @GetMapping("/{projectId}/fragments")
     public ResponseEntity<List<FragmentShortDto>> findAll(@RequestParam(name = PaginationParams.LIMIT, defaultValue = "10") @Min(0) Integer limit,
-                                                           @RequestParam(name = PaginationParams.PAGE, defaultValue = "1") @Min(1) Integer page,
+                                                           @RequestParam(name = PaginationParams.PAGE, defaultValue = "0") @Min(0) Integer page,
                                                            @PathVariable @Min(0) Long projectId
     ) {
         var params = new PaginationParams(limit, page);

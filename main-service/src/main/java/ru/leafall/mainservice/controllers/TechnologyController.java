@@ -24,7 +24,7 @@ public class TechnologyController {
     @GetMapping
     public ResponseEntity<List<TechnologyFullDto>> findAll(
             @RequestParam(name = PaginationParams.LIMIT, defaultValue = "10") @Min(0) Integer limit,
-            @RequestParam(name = PaginationParams.PAGE, defaultValue = "1") @Min(1) Integer page
+            @RequestParam(name = PaginationParams.PAGE, defaultValue = "0") @Min(0) Integer page
     ) {
         var result = service.findAll(new PaginationParams(limit, page));
         return ResponseEntity.ok()

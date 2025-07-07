@@ -35,7 +35,7 @@ public class FragmentServiceImpl implements FragmentService {
     @Transactional(readOnly = true)
     public PaginationResponse<FragmentShortDto> findAllByProjectId(Long projectId, PaginationParams params) {
         Sort sort = Sort.by("id").ascending();
-        var pageable = PageRequest.of(params.limit(), params.page(), sort);
+        var pageable = PageRequest.of(params.page(), params.limit(), sort);
         var fragments = repository.findAllByProjectId(projectId, pageable);
         var result = fragments.map(mapper::mapToShortDto);
         return new PaginationResponse<>(result.getContent(), fragments.getTotalElements());

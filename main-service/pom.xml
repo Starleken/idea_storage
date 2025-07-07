@@ -108,7 +108,7 @@
         <dependency>
             <groupId>ru.leafall</groupId>
             <artifactId>file-service-starter</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.1.5-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

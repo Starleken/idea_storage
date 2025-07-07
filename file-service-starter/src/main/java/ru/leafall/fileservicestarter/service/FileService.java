@@ -1,13 +1,19 @@
 package ru.leafall.fileservicestarter.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import ru.leafall.fileservicestarter.dto.FileResponseDto;
+import ru.leafall.fileservicestarter.dto.FileUploadDto;
+import org.springframework.core.io.Resource;
+
 
 import java.util.List;
 import java.util.Set;
@@ -16,24 +22,35 @@ import java.util.UUID;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.http.MediaType.*;
 
-@Service
 public class FileService {
 
     private final String fileServiceUrl;
     private final RestTemplate template = new RestTemplate();
 
-    @Autowired
     public FileService(String fileServiceUrl) {
         this.fileServiceUrl = fileServiceUrl;
     }
 
     public FileResponseDto upload(MultipartFile file) {
-        String url = String.format("%s/%s", fileServiceUrl, "upload");
+        try {
+            String url = String.format("%s/%s", fileServiceUrl, "upload");
 
-        HttpHeaders headers = generateHeaders(MULTIPART_FORM_DATA);
-        HttpEntity<MultipartFile> request = new HttpEntity<>(file, headers);
-        var response = template.exchange(url, POST, request, FileResponseDto.class);
-        return response.getBody();
+            HttpHeaders headers = generateHeaders(MULTIPART_FORM_DATA);
+            MultiValueMap<String, Object> body
+                    = new LinkedMultiValueMap<>();
+            Resource resource = new ByteArrayResource(file.getBytes()) {
+                @Override
+                public String getFilename() {
+                    return file.getOriginalFilename();
+                }
+            };
+            body.add("file", resource);
+            HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
+            var response = template.exchange(url, POST, request, FileResponseDto.class);
+            return response.getBody();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public List<FileResponseDto> findAllByIds(Set<UUID> ids) {
@@ -41,7 +58,7 @@ public class FileService {
 
         HttpHeaders headers = generateHeaders(APPLICATION_JSON);
         HttpEntity<Set<UUID>> request = new HttpEntity<>(ids, headers);
-        var response = template.exchange(url, POST, request, List.class);
+        var response = template.exchange(url, GET, request, List.class);
         return response.getBody();
     }
 

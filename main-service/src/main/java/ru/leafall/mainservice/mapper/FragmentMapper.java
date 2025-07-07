@@ -11,7 +11,9 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {ProjectMapper.class})
 public interface FragmentMapper {
     FragmentFullDto mapToFullDto(FragmentEntity fragment);
+
     FragmentShortDto mapToShortDto(FragmentEntity fragment);
+    @Mapping(target = "picture", ignore = true)
     FragmentEntity mapToEntity(FragmentCreateDto dto);
     default void update(FragmentEntity fragment, FragmentUpdateDto dto) {
         fragment.setDescription(dto.getDescription());

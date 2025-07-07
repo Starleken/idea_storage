@@ -29,8 +29,8 @@ public class ProjectController {
 
     @GetMapping()
     public ResponseEntity<List<ProjectFullDto>> getProjects(@RequestParam(name = PaginationParams.LIMIT, defaultValue = "10") @Min(0) Integer limit,
-                                                            @RequestParam(name = PaginationParams.PAGE, defaultValue = "1") @Min(1) Integer page,
-                                                            @RequestParam(name = "ids") Set<Long> ids
+                                                            @RequestParam(name = PaginationParams.PAGE, defaultValue = "0") @Min(0) Integer page,
+                                                            @RequestParam(name = "ids", required = false) Set<Long> ids
     ) {
         PaginationResponse<ProjectFullDto> result = null;
         var params = new PaginationParams(limit, page);

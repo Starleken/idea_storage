@@ -1,5 +1,0 @@
-spring:
-  application:
-    name: file-service-starter
-file-service-starter:
-  file-service-url: http://127.0.0.1:8081/v1/files
