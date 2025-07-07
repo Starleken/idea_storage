@@ -15,6 +15,10 @@ import org.hibernate.validator.constraints.Length;
 @AllArgsConstructor
 
 public class RelatedProjectUpdateDto {
+    @NotNull
+    @Min(0)
+    private Long id;
+
     @NotBlank
     @Length(min = 1, max = 40)
     private String name;

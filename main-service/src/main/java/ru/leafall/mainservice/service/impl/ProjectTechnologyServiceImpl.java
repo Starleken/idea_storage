@@ -1,5 +1,6 @@
 package ru.leafall.mainservice.service.impl;
 
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -26,12 +27,13 @@ public class ProjectTechnologyServiceImpl implements ProjectTechnologyService {
     private final ProjectTechnologyRepository repository;
     private final TechnologyRepository technologyRepository;
     private final ProjectRepository projectRepository;
+    private final EntityManager manager;
 
 
     @Override
     @Transactional
     public ProjectTechnologiesDto findAllTechnologiesByProjectId(Long projectId, PaginationParams params) {
-        var sort = Sort.by("technologyId").ascending();
+        var sort = Sort.by("id.technology.name").ascending();
         var pageable = PageRequest.of(params.page(), params.limit(), sort);
         var items = repository.findAllByProjectId(projectId, pageable);
         var result = new ProjectTechnologiesDto();
@@ -52,6 +54,7 @@ public class ProjectTechnologyServiceImpl implements ProjectTechnologyService {
 
         if(optionalTechnology.isEmpty()) {
             var newTechnology = new TechnologyEntity();
+            newTechnology.setName(dto.getTechnology());
             technology = technologyRepository.save(newTechnology);
         } else {
             technology = optionalTechnology.get();
@@ -64,7 +67,7 @@ public class ProjectTechnologyServiceImpl implements ProjectTechnologyService {
         var technologyEntity = new ProjectTechnologyEntity();
         technologyEntity.setId(key);
 
-        repository.save(technologyEntity);
+        manager.persist(technologyEntity);
         var result = new ProjectTechnologyShortDto();
         result.setTechnologyId(technology.getId());
         result.setName(technology.getName());

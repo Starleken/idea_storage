@@ -75,7 +75,6 @@ public class FragmentServiceImpl implements FragmentService {
     public Long delete(Long id) {
         FragmentEntity fragment = findByIdOrThrowNotFoundException(id);
         repository.delete(fragment);
-        fileService.delete(UUID.fromString(fragment.getPicture()));
         return id;
     }
 

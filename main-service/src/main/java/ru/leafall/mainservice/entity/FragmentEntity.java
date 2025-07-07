@@ -1,5 +1,6 @@
 package ru.leafall.mainservice.entity;
 
+import io.swagger.v3.oas.annotations.media.Content;
 import jakarta.persistence.*;
 import lombok.Data;
 

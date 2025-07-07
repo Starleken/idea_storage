@@ -35,7 +35,7 @@ public class ExceptionProvider {
     }
 
     private ResponseEntity<ErrorDto> handle(Exception ex, HttpStatus status) {
-        log.error(ex.getMessage());
+        log.error(ex.getMessage(), ex);
         var error = ErrorDto.builder().statusCode(status.value()).message(ex.getMessage()).build();
         return new ResponseEntity<>(error, status);
     }
