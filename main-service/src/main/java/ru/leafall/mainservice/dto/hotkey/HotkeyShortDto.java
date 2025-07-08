@@ -15,6 +15,4 @@ public class HotkeyShortDto {
     private String name;
 
     private String description;
-
-    private Long projectId;
 }

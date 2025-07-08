@@ -1,5 +1,7 @@
 package ru.leafall.mainservice.service.impl;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import ru.leafall.mainservice.dto.technology.TechnologyCreateDto;
 import ru.leafall.mainservice.dto.technology.TechnologyFullDto;
 import ru.leafall.mainservice.dto.technology.TechnologyUpdateDto;
@@ -10,6 +12,8 @@ import ru.leafall.mainservice.service.TechnologyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.leafall.mainstarter.utils.PaginationParams;
+import ru.leafall.mainstarter.utils.PaginationResponse;
 import ru.leafall.mainstarter.utils.ThrowableUtils;
 
 import java.util.List;
@@ -24,11 +28,12 @@ public class TechnologyServiceImpl implements TechnologyService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<TechnologyFullDto> findAll() {
-        List<TechnologyEntity> technologies = repository.findAll();
-        return technologies.stream()
-                .map(mapper::mapToFullDto)
-                .collect(Collectors.toList());
+    public PaginationResponse<TechnologyFullDto> findAll(PaginationParams params) {
+        Sort sort = Sort.by("name").ascending();
+        var pageable = PageRequest.of(params.page(), params.limit(), sort);
+        var technologies = repository.findAll(pageable);
+        var result = technologies.map(mapper::mapToFullDto);
+        return new PaginationResponse<>(result.getContent(), result.getTotalElements());
     }
 
     @Override
@@ -42,6 +47,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     @Transactional
     public TechnologyFullDto create(TechnologyCreateDto dto) {
         TechnologyEntity technology = mapper.mapToEntity(dto);
+        technology.setName(technology.getName().toLowerCase().trim());
         TechnologyEntity saved = repository.save(technology);
         return mapper.mapToFullDto(saved);
     }

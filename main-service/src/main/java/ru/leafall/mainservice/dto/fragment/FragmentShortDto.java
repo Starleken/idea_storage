@@ -13,5 +13,4 @@ public class FragmentShortDto {
     private Long id;
     private String picture;
     private String description;
-    private Long projectId;
 }

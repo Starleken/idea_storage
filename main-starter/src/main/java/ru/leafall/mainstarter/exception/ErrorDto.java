@@ -3,6 +3,7 @@ package ru.leafall.mainstarter.exception;
 
 import java.util.Objects;
 
+
 public class ErrorDto {
     private Integer statusCode;
     private String message;
@@ -13,20 +14,20 @@ public class ErrorDto {
         private String message;
 
         public ErrorDtoBuilder statusCode(Integer statusCode) {
-            ErrorDtoBuilder.this.statusCode = statusCode;
+            this.statusCode = statusCode;
             return this;
         }
 
         public ErrorDtoBuilder message(String message) {
-            ErrorDtoBuilder.this.message = message;
+            this.message = message;
             return this;
         }
 
         public ErrorDto build() {
             var errorDto = new ErrorDto();
-            errorDto.setStatusCode(ErrorDtoBuilder.this.statusCode);
-            errorDto.setMessage(ErrorDtoBuilder.this.message);
-            return new ErrorDto();
+            errorDto.setStatusCode(this.statusCode);
+            errorDto.setMessage(this.message);
+            return errorDto;
         }
     }
 

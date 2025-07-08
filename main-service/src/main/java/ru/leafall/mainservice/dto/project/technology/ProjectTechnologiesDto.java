@@ -5,7 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Builder
@@ -13,5 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 public class ProjectTechnologiesDto {
     private Long projectId;
-    private List<String> technologies;
+    private Set<String> technologies = new HashSet<>();
+    private Long totalCount;
 }

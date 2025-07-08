@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: account-service
+  jpa:
+    show-sql: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgres://localhost:5433:/account_base
+    username: myuser
+    password: secret
+  liquibase:
+    change-log: classpath:db/changelog/master.yml
+    enabled: false
+    user: myuser
+    password: secret
+    url: jdbc:postgres://localhost:5433:/account_base
+  docker:
+    compose:
+      file: account-service/compose.yaml
+logging:
+  level:
+    web: debug
