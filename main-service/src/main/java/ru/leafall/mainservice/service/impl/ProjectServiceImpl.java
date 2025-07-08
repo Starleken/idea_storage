@@ -32,7 +32,6 @@ public class ProjectServiceImpl implements ProjectService {
         final var isVisible = true;
         var sort = Sort.by("name").ascending();
         var pageable = PageRequest.of(params.page(), params.limit(), sort);
-
         var result = repository.findAllByIdInAndIsVisible(ids, isVisible, pageable);
         var mappedResult = result.map(mapper::mapToFullDto);
         return new PaginationResponse<>(mappedResult.getContent(), mappedResult.getTotalElements());
@@ -44,7 +43,6 @@ public class ProjectServiceImpl implements ProjectService {
         final var isVisible = true;
         var sort = Sort.by("name").ascending();
         var pageable = PageRequest.of(params.page(), params.limit(), sort);
-
         var result = repository.findAllByIsVisible(isVisible, pageable);
         var mappedResult = result.map(mapper::mapToFullDto);
         return new PaginationResponse<>(mappedResult.getContent(), mappedResult.getTotalElements());
@@ -53,7 +51,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional(readOnly = true)
     public ProjectFullDto findById(Long id) {
-        var result = findProjectOrThrowNotFoundException(id);
+        ProjectEntity result = findProjectOrThrowNotFoundException(id);
         return mapper.mapToFullDto(result);
     }
 

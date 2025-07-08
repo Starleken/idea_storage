@@ -1,7 +1,10 @@
 package ru.leafall.mainservice.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import ru.leafall.fileservicestarter.dto.FileResponseDto;
 import ru.leafall.fileservicestarter.service.FileService;
 import ru.leafall.mainservice.dto.fragment.FragmentCreateDto;
 import ru.leafall.mainservice.dto.fragment.FragmentFullDto;
@@ -20,10 +23,9 @@ import ru.leafall.mainstarter.utils.PaginationParams;
 import ru.leafall.mainstarter.utils.PaginationResponse;
 import ru.leafall.mainstarter.utils.ThrowableUtils;
 
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FragmentServiceImpl implements FragmentService {
 
     private final FragmentMapper mapper;
@@ -54,7 +56,8 @@ public class FragmentServiceImpl implements FragmentService {
     public FragmentShortDto create(FragmentCreateDto dto) {
         var project = findProjectOrThrowNotFoundException(dto.getProjectId());
         var fragment = mapper.mapToEntity(dto);
-        var picture = fileService.upload(dto.getPicture());
+        var picture = sendMessageToFileService(dto);
+
         fragment.setPicture(picture.getId().toString());
         fragment.setProject(project);
         var savedFragment = repository.save(fragment);
@@ -88,5 +91,21 @@ public class FragmentServiceImpl implements FragmentService {
         return projectRepository.findById(id).orElseThrow(() ->
                 ThrowableUtils.getNotFoundException("Project with id is not found", id)
         );
+    }
+
+    private FileResponseDto sendMessageToFileService(FragmentCreateDto dto) {
+        int iteration = 0;
+        final int maxCountIterations = 3;
+        FileResponseDto picture = new FileResponseDto();
+        while (picture.getId() == null) {
+            try {
+                picture = fileService.upload(dto.getPicture());
+            } catch (Exception exception){
+                if (++iteration > maxCountIterations) {
+                    throw new RuntimeException(exception);
+                }
+            }
+        }
+        return picture;
     }
 }

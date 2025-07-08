@@ -3,8 +3,8 @@ services:
     image: 'mysql:8.0'
     environment:
       - 'MYSQL_DATABASE=idea_storage'
-      - 'MYSQL_PASSWORD=idea_boss'
+      - 'MYSQL_PASSWORD=777888999'
       - 'MYSQL_ROOT_PASSWORD=777888999'
-      - 'MYSQL_USER=777888999'
+      - 'MYSQL_USER=idea_boss'
     ports:
       - '3306'
