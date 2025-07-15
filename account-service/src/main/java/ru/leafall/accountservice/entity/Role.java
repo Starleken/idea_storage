@@ -1,6 +1,7 @@
 package ru.leafall.accountservice.entity;
 
 public enum Role {
-    USER,
-    ADMIN
+    ROLE_USER,
+    ROLE_MODERATOR,
+    ROLE_ADMIN
 }

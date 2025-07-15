@@ -5,18 +5,30 @@ spring:
     show-sql: true
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgres://localhost:5433:/account_base
+    url: jdbc:postgres://localhost:5432:/account_base
     username: myuser
     password: secret
   liquibase:
     change-log: classpath:db/changelog/master.yml
-    enabled: false
+    enabled: true
     user: myuser
     password: secret
-    url: jdbc:postgres://localhost:5433:/account_base
+    url: jdbc:postgres://localhost:5432:/account_base
   docker:
     compose:
       file: account-service/compose.yaml
+
 logging:
   level:
     web: debug
+server:
+  port: 8079
+jwt:
+  tokens:
+    access:
+      key: dWlBQlVZSEpTQWd5dWkzMnF5OHI5ZnNkaGN1aWJ5ODczMnQgcnY4NzlmaWR3aGJmY3l1c2dkZjc4aTN0eTJ3NzhpdUFIU0RGVUlBR0hmNzh1aXdhaG5mdWloNHczZTg3OTV5cmY4OXN1Y25zWlVJUlRleWc3OHdB
+      expiredTime: 15
+    refresh:
+      key: c2RhJlVBSUZHSGI3dThpZWR3c2diN3Q4NDN5dDdmaHVpU0RKQkZqaXNhZlNBVUlSVEcjJipld2Zic3VhaGpLQmZ3eXVpOHczZXk1N2FzZjQzZTg5NzU2NHR5Zzd3ODR1aWVzZGJ2eWU3aXU4ZmI3ODQzc2Z3cmY0Mw==
+      expiredTime: 20000
+

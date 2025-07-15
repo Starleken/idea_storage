@@ -14,8 +14,4 @@ public class TechnologyEntity {
 
     @Column(name = "name")
     private String name;
-
-    public TechnologyEntity() {
-
-    }
 }
