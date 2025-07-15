@@ -59,7 +59,6 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     public ProjectFullDto create(ProjectCreateDto dto) {
         var project = mapper.mapToEntity(dto);
-        project.setCreatedAt(Instant.now().getEpochSecond());
         var result = repository.save(project);
         return mapper.mapToFullDto(result);
     }

@@ -4,12 +4,15 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.CreatedDate;
+import ru.leafall.mainservice.entity.aware.TimestampAware;
+import ru.leafall.mainservice.entity.listener.TimestampListener;
 
 @Entity
 @Data
 @EqualsAndHashCode
 @Table(name = "projects")
-public class ProjectEntity {
+@EntityListeners({TimestampListener.class})
+public class ProjectEntity implements TimestampAware {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
