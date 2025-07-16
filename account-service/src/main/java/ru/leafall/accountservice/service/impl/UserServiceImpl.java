@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.leafall.accountservice.dto.token.TokenAccessDto;
 import ru.leafall.accountservice.dto.token.TokenRefreshDto;
 import ru.leafall.accountservice.dto.token.TokenResponseDto;
 import ru.leafall.accountservice.dto.user.*;
@@ -22,6 +23,7 @@ import ru.leafall.mainstarter.utils.PaginationResponse;
 import ru.leafall.mainstarter.utils.ThrowableUtils;
 
 import java.util.HashSet;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -66,6 +68,15 @@ public class UserServiceImpl implements UserService {
         var result = userRepository.save(entity);
 
         return generateTokens(result);
+    }
+
+    @Override
+    public UserClaimsResponseDto validate(TokenAccessDto dto) {
+        tokenService.validateAccessToken(dto.getToken());
+        var claims = tokenService.getAccessClaims(dto.getToken());
+        Set<Role> roles = claims.get(TokenServiceImpl.ROLES_CLAIMS, Set.class);
+        Long userId = claims.get(TokenServiceImpl.USERID_CLAIMS, Long.class);
+        return UserClaimsResponseDto.builder().id(userId).roles(roles).build();
     }
 
     @Override

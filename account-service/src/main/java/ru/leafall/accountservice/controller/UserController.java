@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ru.leafall.accountservice.dto.token.TokenAccessDto;
 import ru.leafall.accountservice.dto.token.TokenRefreshDto;
 import ru.leafall.accountservice.dto.token.TokenResponseDto;
 import ru.leafall.accountservice.dto.user.*;
@@ -54,6 +55,12 @@ public class UserController {
     public ResponseEntity<TokenResponseDto> signUp(@RequestBody @Valid UserCreateDto dto) {
         var user = service.signUp(dto);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/validate")
+    public ResponseEntity<UserClaimsResponseDto> validate(@RequestBody @Valid TokenAccessDto dto) {
+        var user = service.validate(dto);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PutMapping
