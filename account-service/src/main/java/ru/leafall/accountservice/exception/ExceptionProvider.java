@@ -3,12 +3,15 @@ package ru.leafall.accountservice.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.leafall.accountservice.utils.exception.UnAuthorizationException;
 import ru.leafall.mainstarter.exception.BadRequestException;
 import ru.leafall.mainstarter.exception.ErrorDto;
 import ru.leafall.mainstarter.exception.NotFoundException;
+
+import java.nio.file.AccessDeniedException;
 
 @RestControllerAdvice
 @Slf4j
@@ -32,6 +35,16 @@ public class ExceptionProvider {
     @ExceptionHandler({UnAuthorizationException.class})
     public ResponseEntity<ErrorDto> handleException(UnAuthorizationException exception) {
         return handle(exception, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    public ResponseEntity<ErrorDto> handleException(MethodArgumentNotValidException exception) {
+        return handle(exception, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({AccessDeniedException.class})
+    public ResponseEntity<ErrorDto> handleException(AccessDeniedException exception) {
+        return handle(exception, HttpStatus.FORBIDDEN);
     }
 
     private ResponseEntity<ErrorDto> handle(Exception ex, HttpStatus status) {
