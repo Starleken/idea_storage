@@ -13,8 +13,6 @@ public class UserDetailsImpl implements UserDetails {
 
     private final UserEntity user;
 
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         var roles = user.getRoles();

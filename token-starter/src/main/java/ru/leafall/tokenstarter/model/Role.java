@@ -1,4 +1,4 @@
-package ru.leafall.gatewayservice.dto;
+package ru.leafall.tokenstarter.model;
 
 public enum Role {
     ROLE_USER,

@@ -57,12 +57,6 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
-    @PostMapping("/validate")
-    public ResponseEntity<UserClaimsResponseDto> validate(@RequestBody @Valid TokenAccessDto dto) {
-        var user = service.validate(dto);
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
-
     @PutMapping
     @Secured("USER")
     @PreAuthorize("hasRole('ADMIN') || authentication.principal.id==#dto.getId()")

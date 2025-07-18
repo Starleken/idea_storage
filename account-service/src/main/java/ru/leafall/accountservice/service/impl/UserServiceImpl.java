@@ -17,13 +17,11 @@ import ru.leafall.accountservice.service.EncodingService;
 import ru.leafall.accountservice.service.TokenService;
 import ru.leafall.accountservice.service.UserService;
 import ru.leafall.accountservice.utils.exception.UnAuthorizationException;
-import ru.leafall.mainstarter.exception.NotFoundException;
 import ru.leafall.mainstarter.utils.PaginationParams;
 import ru.leafall.mainstarter.utils.PaginationResponse;
 import ru.leafall.mainstarter.utils.ThrowableUtils;
 
 import java.util.HashSet;
-import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -68,15 +66,6 @@ public class UserServiceImpl implements UserService {
         var result = userRepository.save(entity);
 
         return generateTokens(result);
-    }
-
-    @Override
-    public UserClaimsResponseDto validate(TokenAccessDto dto) {
-        tokenService.validateAccessToken(dto.getToken());
-        var claims = tokenService.getAccessClaims(dto.getToken());
-        Set<Role> roles = claims.get(TokenServiceImpl.ROLES_CLAIMS, Set.class);
-        Long userId = claims.get(TokenServiceImpl.USERID_CLAIMS, Long.class);
-        return UserClaimsResponseDto.builder().id(userId).roles(roles).build();
     }
 
     @Override

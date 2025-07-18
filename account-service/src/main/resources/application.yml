@@ -17,10 +17,6 @@ spring:
   docker:
     compose:
       file: account-service/compose.yaml
-
-logging:
-  level:
-    web: debug
 server:
   port: 8079
 eureka:

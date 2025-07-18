@@ -3,11 +3,13 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/account-service" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/community-service" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/eureka-server" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/file-service" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/file-service-starter" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/gateway-service" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/main-service" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/main-starter" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/token-starter" vcs="Git" />
   </component>
 </project>

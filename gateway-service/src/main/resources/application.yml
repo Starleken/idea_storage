@@ -12,22 +12,18 @@ spring:
                 - Path=/idea-storage/**
               filters:
                 - RewritePath=/idea-storage/(?<segment>.*), /$\{segment}
-                - TokenValidation
             - id: account-service
               uri: lb://account-service
               predicates:
                 - Path=/account-service/**
               filters:
                 - RewritePath=/account-service/(?<segment>.*), /$\{segment}
-                - TokenValidation
             - id: file-service
               uri: lb://account-service
               predicates:
                 - Path=/file-service/**
               filters:
                 - RewritePath=/file-service/(?<segment>.*), /$\{segment}
-                - TokenValidation
-
 server:
   port: 8080
 
