@@ -9,7 +9,6 @@ import ru.leafall.tokenstarter.service.TokenService;
 
 import javax.crypto.SecretKey;
 
-@Service
 public class TokenServiceImpl implements TokenService {
     private final SecretKey key;
 

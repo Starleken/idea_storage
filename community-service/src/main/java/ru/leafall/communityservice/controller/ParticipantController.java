@@ -10,6 +10,7 @@ import ru.leafall.communityservice.dto.participant.ParticipantCreateDto;
 import ru.leafall.communityservice.dto.participant.ParticipantResponseFullDto;
 import ru.leafall.communityservice.dto.participant.ParticipantUpdateDto;
 import ru.leafall.communityservice.service.ParticipantService;
+import ru.leafall.mainstarter.model.Project;
 import ru.leafall.mainstarter.utils.PaginationParams;
 
 import java.util.List;
@@ -21,9 +22,9 @@ public class ParticipantController {
     private final ParticipantService service;
 
     @GetMapping("v1/users/{userId}/projects")
-    public ResponseEntity<List<ParticipantResponseFullDto>> findAllByUserId(@PathVariable @Min(0) Long userId,
-                                                                            @RequestParam(name = PaginationParams.PAGE, defaultValue = "0") @Min(0) Integer page,
-                                                                            @RequestParam(name = PaginationParams.LIMIT, defaultValue = "5") @Min(1) Integer limit) {
+    public ResponseEntity<List<Project>> findAllByUserId(@PathVariable @Min(0) Long userId,
+                                                         @RequestParam(name = PaginationParams.PAGE, defaultValue = "0") @Min(0) Integer page,
+                                                         @RequestParam(name = PaginationParams.LIMIT, defaultValue = "5") @Min(1) Integer limit) {
         var params = new PaginationParams(limit, page);
         var result = service.findAllByUserId(userId, params);
         return ResponseEntity.ok()

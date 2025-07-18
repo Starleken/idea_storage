@@ -6,4 +6,4 @@ services:
       - 'POSTGRES_USER=file_storage'
       - 'POSTGRES_DB=files_base'
     ports:
-      - '5432'
+      - '5432:5432'

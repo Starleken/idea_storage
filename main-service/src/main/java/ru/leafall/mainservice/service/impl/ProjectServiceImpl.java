@@ -1,10 +1,13 @@
 package ru.leafall.mainservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.leafall.mainservice.component.ProjectObservable;
+import ru.leafall.mainservice.component.communication.CommunicationService;
 import ru.leafall.mainservice.dto.project.ProjectCreateDto;
 import ru.leafall.mainservice.dto.project.ProjectFullDto;
 import ru.leafall.mainservice.dto.project.ProjectUpdateDto;
@@ -18,6 +21,8 @@ import ru.leafall.mainstarter.utils.ThrowableUtils;
 
 import java.time.Instant;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +30,15 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository repository;
     private final ProjectMapper mapper;
+    private final Set<ProjectObservable> projects;
+
+    @Autowired
+    public ProjectServiceImpl(ProjectRepository repository, ProjectMapper mapper, CommunicationService service) {
+        this.repository = repository;
+        this.mapper = mapper;
+        this.projects = new HashSet<>();
+        projects.add(service);
+    }
 
     @Override
     @Transactional(readOnly = true)

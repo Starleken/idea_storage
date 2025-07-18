@@ -12,6 +12,8 @@ import ru.leafall.communityservice.entity.ParticipantEntity;
 import ru.leafall.communityservice.mapper.ParticipantMapper;
 import ru.leafall.communityservice.repository.ParticipantRepository;
 import ru.leafall.communityservice.service.ParticipantService;
+import ru.leafall.mainstarter.model.Project;
+import ru.leafall.mainstarter.service.ProjectService;
 import ru.leafall.mainstarter.utils.PaginationParams;
 import ru.leafall.mainstarter.utils.PaginationResponse;
 import ru.leafall.mainstarter.utils.ThrowableUtils;
@@ -21,15 +23,16 @@ import ru.leafall.mainstarter.utils.ThrowableUtils;
 public class ParticipantServiceImpl implements ParticipantService {
     private final ParticipantRepository repository;
     private final ParticipantMapper mapper;
+    private final ProjectService projectService;
 
     @Override
     @Transactional
-    public PaginationResponse<ParticipantResponseFullDto> findAllByUserId(Long userId, PaginationParams params) {
+    public PaginationResponse<Project> findAllByUserId(Long userId, PaginationParams params) {
         var sort = Sort.by("id").ascending();
         var pagination = PageRequest.of(params.page(), params.limit(), sort);
         var paginationResult = repository.findAllByUserId(userId, pagination);
-        var result = paginationResult.map(mapper::mapToFullDto);
-        return new PaginationResponse<>(result.getContent(), result.getTotalElements());
+        var projects = projectService.findAllByIds(paginationResult.map(ParticipantEntity::getProjectId).toSet());
+        return new PaginationResponse<>(projects, paginationResult.getTotalElements());
     }
 
     @Override
