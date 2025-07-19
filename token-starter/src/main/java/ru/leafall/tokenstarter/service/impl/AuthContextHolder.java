@@ -2,16 +2,17 @@ package ru.leafall.tokenstarter.service.impl;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import ru.leafall.tokenstarter.model.UserDetailsImpl;
 
 @Service
 public class AuthContextHolder {
-    private static final ThreadLocal<UserDetails> CONTEXT_HOLDER = new ThreadLocal<>();
+    private static final ThreadLocal<UserDetailsImpl> CONTEXT_HOLDER = new ThreadLocal<>();
 
-    public static void set(UserDetails context) {
+    public static void set(UserDetailsImpl context) {
         CONTEXT_HOLDER.set(context);
     }
 
-    public static UserDetails get() {
+    public static UserDetailsImpl get() {
         return CONTEXT_HOLDER.get();
     }
 

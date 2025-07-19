@@ -16,6 +16,7 @@ import ru.leafall.accountservice.service.UserService;
 import ru.leafall.mainstarter.utils.PaginationParams;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,6 +36,12 @@ public class UserController {
         return ResponseEntity.ok()
                 .header(PaginationParams.HEADER_TOTAL_COUNT, result.totalCount().toString())
                 .body(result.items());
+    }
+    @GetMapping("/ids")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<UserResponseDto>> findAllByIds(@RequestParam() Set<Long> ids) {
+        var result = service.findAllByIds(ids);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

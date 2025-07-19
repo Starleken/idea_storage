@@ -43,8 +43,8 @@ databaseChangeLog:
                   type: BIGINT
                   constraints:
                     nullable: false
-                    references: participants(id)
-                    foreignKeyName: fk_tasks_participants
+                    references: participants(id) ON DELETE CASCADE
+                    foreignKeyName: fk_tasks_participant
               - column:
                   name: header
                   type: VARCHAR(30)
@@ -95,7 +95,7 @@ databaseChangeLog:
                   type: BIGINT
                   constraints:
                     nullable: false
-                    references: tasks(id)
+                    references: tasks(id) ON DELETE CASCADE
                     foreignKeyName: fk_tasks_steps
               - column:
                   name: text

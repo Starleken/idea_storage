@@ -1,4 +1,4 @@
-package ru.leafall.mainservice.controllers;
+package ru.leafall.mainservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -8,8 +8,6 @@ import org.springframework.http.ResponseEntity;
 import ru.leafall.mainservice.dto.project.ProjectCreateDto;
 import ru.leafall.mainservice.dto.project.ProjectFullDto;
 import ru.leafall.mainservice.dto.project.ProjectUpdateDto;
-import ru.leafall.mainservice.entity.TechnologyEntity;
-import ru.leafall.mainservice.repository.TechnologyRepository;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +18,6 @@ import ru.leafall.mainstarter.utils.PaginationParams;
 import ru.leafall.mainstarter.utils.PaginationResponse;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.*;
 

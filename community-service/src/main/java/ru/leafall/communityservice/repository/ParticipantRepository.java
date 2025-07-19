@@ -6,7 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.leafall.communityservice.entity.ParticipantEntity;
 
+import java.util.List;
+
 @Repository
 public interface ParticipantRepository extends JpaRepository<ParticipantEntity, Long> {
     Page<ParticipantEntity> findAllByUserId(Long userId, Pageable pageable);
+    List<ParticipantEntity> findAllByProjectId(Long projectId);
 }

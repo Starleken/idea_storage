@@ -21,7 +21,7 @@ public class AuthContextResolver {
         this.tokenService = tokenService;
     }
 
-    public UserDetails getContextFromToken(String token) {
+    public UserDetailsImpl getContextFromToken(String token) {
         var accessToken = excludeToken(token);
 
         if (accessToken != null) {

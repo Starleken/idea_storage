@@ -19,7 +19,7 @@ public class CommunicationService implements ProjectObservable {
     @Override
     public void create(ProjectEntity project) {
         var uri = UriComponentsBuilder
-                .fromUriString(String.format("http://lb:communication-service/v1/users/%d/projects/%d", 1, project.getId()))
+                .fromUriString(String.format("http://lb:community-service/v1/users/%d/projects/%d", 1, project.getId()))
                 .build().toUri();
         var response = restTemplate.getForEntity(uri, Participant.class);
         var result = response.getBody();
@@ -28,7 +28,7 @@ public class CommunicationService implements ProjectObservable {
     @Override
     public void delete(ProjectEntity project) {
         var uri = UriComponentsBuilder
-                .fromUriString(String.format("http://lb:communication-service/v1/users/%d/projects/%d", 1, project.getId()))
+                .fromUriString(String.format("http://lb:community-service/v1/projects/%d", project.getId()))
                 .build().toUri();
         restTemplate.delete(uri);
     }

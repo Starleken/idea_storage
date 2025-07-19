@@ -22,6 +22,9 @@ import ru.leafall.mainstarter.utils.PaginationResponse;
 import ru.leafall.mainstarter.utils.ThrowableUtils;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -40,6 +43,13 @@ public class UserServiceImpl implements UserService {
         var users = userRepository.findAll(pagination);
         var result = users.map(userMapper::mapToResponse);
         return new PaginationResponse<>(result.getContent(), result.getTotalElements());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserResponseDto> findAllByIds(Set<Long> ids) {
+        var users = userRepository.findAllByIdIn(ids);
+        return users.stream().map(userMapper::mapToResponse).toList();
     }
 
     @Override
