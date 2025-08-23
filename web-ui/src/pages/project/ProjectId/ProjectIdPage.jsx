@@ -1,5 +1,7 @@
 import {NavLink, Route, Routes, useLocation, useParams} from "react-router-dom";
 import ProjectInformation from "../Information/ProjectInformation";
+import FragmentPage from "../Fragment/FragmentPage";
+import TaskPage from "../Task/TaskPage";
 
 
 function ProjectIdPage() {
@@ -18,8 +20,8 @@ function ProjectIdPage() {
             <div className='line-points stretch-vertical'>
                 <Routes>
                     <Route path='/information' element={<ProjectInformation/>}/>
-                    <Route path='/pages'/>
-                    <Route path='/tasks'/>
+                    <Route path='/pages' element={<FragmentPage/>}/>
+                    <Route path='/tasks' element={<TaskPage/>}/>
                 </Routes>
             </div>
         </div>
