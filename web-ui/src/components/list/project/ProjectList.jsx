@@ -1,8 +1,7 @@
 import ProjectItem from "./item/ProjectItem";
-import {useState} from "react";
 
 
-function ProjectList({id,setId, projects, handleProject}) {
+function ProjectList({id, projects, handleProject}) {
 
     function clickOnProjectItem(id) {
         handleProject(id)

@@ -322,3 +322,129 @@ button :hover {
     width: 100%;
     margin: 5px;
 }
+
+.task__item {
+    padding: 15px 30px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
+    min-width: 80%;
+    border-radius: 15px;
+    margin: 5px 0;
+    justify-content: space-between;
+}
+
+.task__content {
+    align-items: center;
+}
+
+.task__checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 1px solid #0d6efd;
+    border-radius: 100%;
+    background-color: #fff;
+    cursor: pointer;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    margin: 0 5px;
+}
+.task__checkbox:checked{
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+.task_steps {
+    color: #9b9b9b;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0 5px;
+}
+
+.task_date {
+    color: #9b9b9b;
+    font-size: 14px;
+}
+
+.hotkey {
+    align-items: center;
+    padding: 5px 15px;
+}
+
+.hotkey h3 {
+    padding: 5px;
+    margin: 0 5px;
+    width: 1.5rem;
+    height: 1.5rem;
+    text-align: center;
+    vertical-align: center;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.toolbar {
+    vertical-align: middle;
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%)
+}
+
+.tools {
+    margin: 10px 0;
+    border-radius: 10px;
+    background-color: white;
+    padding: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.actions {
+    border-radius: 10px;
+    background-color: white;
+    padding: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.actions button{
+    padding: 5px 15px;
+    border-radius: 5px;
+}
+
+.actions button:hover {
+    background-color: #d2e9ff;
+}
+
+.card, .trayCard, .trayOverlayCard {
+    padding: 15px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: white;
+    transition: 0.2s linear background-color, border;
+    margin: 0 5px 0 0;
+}
+.card:hover {
+    background-color: #d2e9ff;
+}
+.canvas {
+    position: relative;
+    width: 0;
+    height: 0;
+}
+
+.canvas-container {
+    background: url("https://cdn.vectorstock.com/i/500p/54/71/dot-grid-background-pattern-vector-42065471.jpg") repeat;
+    background-size: auto 100%;
+    border: 2px solid #007bff;
+    border-radius: 10px;
+    height: 75vh;
+    width: 100vh;
+    z-index: 1;
+}
+
+.tray {
+    display: flex;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    height: 50px;
+}
+
+
