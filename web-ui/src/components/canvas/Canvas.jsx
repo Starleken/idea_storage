@@ -1,12 +1,12 @@
 import {DndContext, useDroppable} from "@dnd-kit/core";
 import Node from "./node/Node"
-import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
+import {useCallback, useLayoutEffect, useRef} from "react";
 import Toolbar from "./toolbar/Toolbar";
 import {useCanvasInteractions} from "./hooks/useCanvasInteractions";
 import {useCanvasDnD} from "./hooks/useCanvasDnD";
 
 
-function Canvas({cards = [], setCards, removeCard, transform, setTransform}) {
+function Canvas({cards = [], setCards, removeCard, transform, setTransform, isFullScreen}) {
     const { setNodeRef } = useDroppable({
         id: "canvas",
     });
@@ -65,7 +65,7 @@ function Canvas({cards = [], setCards, removeCard, transform, setTransform}) {
             className="canvas-container"
             style={{
                 width: '100%',
-                height: '100%',
+                height: isFullScreen ? '80vh' : '70vh',
                 overflow: 'hidden',
                 cursor: isPanning ? 'grabbing' : 'default',
                 position: 'relative',

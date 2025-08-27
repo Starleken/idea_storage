@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {createSearchParams, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {findById} from "../../../utils/project-repository";
 import ticksToDate from "ticks-to-date";
@@ -7,6 +7,7 @@ import Markdown from "markdown-to-jsx";
 
 function ProjectInformation() {
     const {id} = useParams();
+    const navigate = useNavigate()
     const [project, setProject] = useState({
         id: 0,
         name: 'project',
@@ -25,7 +26,15 @@ function ProjectInformation() {
         setProject(findById(parseInt(id)))
     }, [id])
 
-    return <div className='container-information'>
+    const navigateToChangePage = () => {
+        navigate(`/projects/handle?id=${id}`)
+    }
+
+    return <div className='container-information scroll-container'>
+        <div className='tools' style={{float: 'right'}}>
+            <button onClick={() => navigateToChangePage()}>✏️</button>
+            <button>lll</button>
+        </div>
         <div className='flex row'>
             <div className='flex column information'>
                 <p>Дата создания: {ticksToDate(project.createdAt).toUTCString()}</p>

@@ -27,7 +27,7 @@ function ProjectIdPage() {
                     <Route path='/pages' element={<FragmentPage/>}/>
                     <Route path='/hotkeys' element={<HotkeyPage/>}/>
                     <Route path='/tasks' element={<TaskPage/>}/>
-                    <Route path='/board' element={<BoardPage/>}/>
+                    <Route path='/board' element={<BoardPage isFullScreen={false}/>}/>
                 </Routes>
             </div>
         </div>

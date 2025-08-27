@@ -7,7 +7,7 @@ import {trayCardsData} from "../../../api/cards";
 import {useHandlerCards} from "../../../hooks/useHandlerCards";
 
 
-function BoardPage() {
+function BoardPage({isFullScreen}) {
     const [trayCards, setTrayCards] = useState(trayCardsData)
     const [draggedTrayCardId, setDraggedTrayCardId] = useState(null)
     const {transform, updateTransform} = useCanvasTransform()
@@ -33,12 +33,12 @@ function BoardPage() {
                     return <Addable card={trayCard} key={trayCard.id} />;
                 })}
             </div>
-            <Canvas cards={cards} setCards={setCards} removeCard={removeCard} transform={transform} setTransform={updateTransform}/>
+            <Canvas cards={cards} setCards={setCards} removeCard={removeCard} isFullScreen={isFullScreen} transform={transform} setTransform={updateTransform}/>
             <DragOverlay>
                 <div style={{
                     transformOrigin: "top left",
                     transform: `scale(${transform.scale})`,
-                }} className="trayOverlayCard"><img src={draggedTrayCardId}/></div>
+                }} className="trayOverlayCard"><img src={draggedTrayCardId} alt='card img'/></div>
             </DragOverlay>
         </DndContext>
     )
