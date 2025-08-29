@@ -12,7 +12,7 @@ public class TimestampListener {
     @PrePersist
     private void beforeSave(Object object) {
         if(object instanceof TimestampAware) {
-            ((TimestampAware) object).setCreatedAt(Instant.now().getEpochSecond());
+            ((TimestampAware) object).setCreatedAt(Instant.now().toEpochMilli());
         }
     }
 }

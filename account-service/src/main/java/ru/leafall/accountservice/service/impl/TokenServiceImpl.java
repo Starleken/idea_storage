@@ -23,7 +23,8 @@ import java.util.Map;
 @Service
 public class TokenServiceImpl implements TokenService {
 
-    private static final String ROLES_CLAIMS = "rol";
+    public static final String ROLES_CLAIMS = "rol";
+    public static final String USERID_CLAIMS = "uid";
 
     private final TokenSettings accessTokenSettings;
     private final TokenSettings refreshTokenSettings;
@@ -52,6 +53,7 @@ public class TokenServiceImpl implements TokenService {
                 .subject(claims.getSubject())
                 .expiration(TimeUtils.getDateFromUtcExpired(accessTokenSettings.getExpiredTime()))
                 .claim(ROLES_CLAIMS, claims.get(ROLES_CLAIMS))
+                .claim(USERID_CLAIMS, claims.get(USERID_CLAIMS))
                 .compact();
     }
 
@@ -106,6 +108,7 @@ public class TokenServiceImpl implements TokenService {
     private Map<String, Object> generateClaims(UserEntity user) {
         Map<String, Object> map = new HashMap<>();
         map.put(ROLES_CLAIMS, user.getRoles());
+        map.put(USERID_CLAIMS, user.getId());
         return map;
     }
     @Override

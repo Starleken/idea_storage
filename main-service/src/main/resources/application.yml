@@ -1,6 +1,6 @@
 spring:
   application:
-     name: idea_storage
+     name: idea-storage-service
   jpa:
     show-sql: true
   datasource:
@@ -18,3 +18,11 @@ spring:
   docker:
     compose:
       file: main-service/compose.yaml
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+server:
+  port: 8081

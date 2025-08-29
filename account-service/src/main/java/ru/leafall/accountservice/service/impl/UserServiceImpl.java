@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.leafall.accountservice.dto.token.TokenAccessDto;
 import ru.leafall.accountservice.dto.token.TokenRefreshDto;
 import ru.leafall.accountservice.dto.token.TokenResponseDto;
 import ru.leafall.accountservice.dto.user.*;
@@ -16,12 +17,14 @@ import ru.leafall.accountservice.service.EncodingService;
 import ru.leafall.accountservice.service.TokenService;
 import ru.leafall.accountservice.service.UserService;
 import ru.leafall.accountservice.utils.exception.UnAuthorizationException;
-import ru.leafall.mainstarter.exception.NotFoundException;
 import ru.leafall.mainstarter.utils.PaginationParams;
 import ru.leafall.mainstarter.utils.PaginationResponse;
 import ru.leafall.mainstarter.utils.ThrowableUtils;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -40,6 +43,13 @@ public class UserServiceImpl implements UserService {
         var users = userRepository.findAll(pagination);
         var result = users.map(userMapper::mapToResponse);
         return new PaginationResponse<>(result.getContent(), result.getTotalElements());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserResponseDto> findAllByIds(Set<Long> ids) {
+        var users = userRepository.findAllByIdIn(ids);
+        return users.stream().map(userMapper::mapToResponse).toList();
     }
 
     @Override

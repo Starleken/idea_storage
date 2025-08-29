@@ -17,12 +17,14 @@ spring:
   docker:
     compose:
       file: account-service/compose.yaml
-
-logging:
-  level:
-    web: debug
 server:
   port: 8079
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
 jwt:
   tokens:
     access:

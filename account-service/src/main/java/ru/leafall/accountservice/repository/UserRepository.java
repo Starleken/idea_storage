@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.leafall.accountservice.entity.UserEntity;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -15,4 +17,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByEmail(String email);
     @Query("SELECT u FROM UserEntity  u where u.login=?1 or u.email = ?2")
     Optional<UserEntity> findByLoginOrEmail(String login, String email);
+    List<UserEntity> findAllByIdIn(Collection<Long> ids);
 }
