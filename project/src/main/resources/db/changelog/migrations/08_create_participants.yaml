@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: 8_create_participants
+      author: betrayal
+      changes:
+        - createTable:
+            tableName: participants
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    references: users(id)
+                    foreignKeyName: fk_users_participants
+              - column:
+                  name: project_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    references: projects(id)
+                    foreignKeyName: fk_projects_participants
+              - column:
+                  name: role
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: permissions
+                  type: TEXT[]
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            columnNames: "user_id, project_id"
+            tableName: participants
+            constraintName: 'uq_users_projects_participants'

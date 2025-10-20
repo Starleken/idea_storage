@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 7_create_people
+      author: betrayal
+      changes:
+        - createTable:
+            tableName: people
+            columns:
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    references: users(id)
+                    foreignKeyName: fk_users_people
+              - column:
+                  name: avatar
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: nickname
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: false

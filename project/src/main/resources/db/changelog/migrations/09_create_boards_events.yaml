@@ -1,0 +1,56 @@
+databaseChangeLog:
+  - changeSet:
+      id: 9_create_boards_events
+      author: betrayal
+      changes:
+        - sql:
+            sql: "CREATE TYPE board_type_action_enum AS ENUM ('move','drag','connect')"
+        - sql:
+            sql: "CREATE TYPE board_type_entity_enum AS ENUM ('fragment','comment','task')"
+        - createTable:
+            tableName: boards_events
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: project_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    references: projects(id)
+                    foreignKeyName: fk_projects_participants
+              - column:
+                  name: x
+                  type: float
+                  constraints:
+                    nullable: false
+              - column:
+                  name: y
+                  type: float
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: board_type_action_enum
+                  constraints:
+                    nullable: false
+              - column:
+                  name: entity_type
+                  type: board_type_entity_enum
+                  constraints:
+                    nullable: false
+              - column:
+                  name: entity_id
+                  type: VARCHAR(40)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: payload
+                  type: JSONB
+                  constraints:
+                    nullable: false

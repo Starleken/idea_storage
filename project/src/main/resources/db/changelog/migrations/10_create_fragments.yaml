@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: 10_create_fragments
+      author: admin
+      changes:
+        - createTable:
+            tableName: fragments
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  defaultValueComputed: 'gen_random_uuid()'
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: project_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    references: projects(id)
+                    foreignKeyName: fk_projects_fragments
+              - column:
+                  name: title
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(10000)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: image
+                  type: VARCHAR(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    references: users(id)
+                    foreignKeyName: fk_users_fragments

@@ -1,0 +1,26 @@
+spring:
+  config:
+    import: file:.env[.properties]
+  application:
+    name: protobin
+  datasource:
+    username: ${DATA_USERNAME}
+    password: ${DATA_PASSWORD}
+    url: jdbc:postgresql://${DATA_HOST}:${DATA_PORT}/${DATA_NAME}
+  liquibase:
+    change-log: classpath:db/changelog/master.yml
+    enabled: true
+    user: ${DATA_USERNAME}
+    password: ${DATA_PASSWORD}
+    url: jdbc:postgresql://${DATA_HOST}:${DATA_PORT}/${DATA_NAME}
+  output:
+    ansi:
+      enabled: always
+logging:
+  file:
+    name: application.log
+    path: /logs
+  pattern:
+    file: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'
+    console: '%clr(%d{HH:mm:ss.SSS}){faint} %clr(%-5level) %clr([%thread]){magenta} %clr(%logger{36}){cyan} %msg%n'
+

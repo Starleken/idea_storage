@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3_create_tags
+      author: betrayal
+      changes:
+        - createTable:
+            tableName: tags
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: project_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    references: projects(id)
+                    foreignKeyName: 'fk_projects_tags'
+              - column:
+                  name: value
+                  type: VARCHAR(40)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            columnNames: "project_id, value"
+            constraintName: "uq_tags_projects"
+            tableName: tags
