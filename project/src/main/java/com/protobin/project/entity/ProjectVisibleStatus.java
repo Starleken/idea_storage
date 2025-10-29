@@ -1,6 +1,6 @@
 package com.protobin.project.entity;
 
-public enum ProjectStatusVisible {
+public enum ProjectVisibleStatus {
     VISIBLE,
     CLOSED
 }

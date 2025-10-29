@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "projects")
 @Data
@@ -16,7 +18,7 @@ public class ProjectEntity implements CreatedAtTimestampAware, UpdateAtTimestamp
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private UUID id;
 
     @Column(name = "title", nullable = false)
     private  String title;
@@ -28,7 +30,8 @@ public class ProjectEntity implements CreatedAtTimestampAware, UpdateAtTimestamp
     private String description;
 
     @Column(name = "status_visible", nullable = false)
-    private ProjectStatusVisible statusVisible;
+    @Enumerated(EnumType.STRING)
+    private ProjectVisibleStatus visibleStatus;
 
     @Column(name = "created_at", nullable = false)
     private Long createdAt;

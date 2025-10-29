@@ -3,8 +3,6 @@ databaseChangeLog:
       id: 2_create_participants
       author: betrayal
       changes:
-        - sql:
-            sql: "CREATE TYPE visibility_project_enum AS ENUM ('visible','closed')"
         - createTable:
             tableName: projects
             columns:
@@ -38,10 +36,11 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: status_visible
-                  type: visibility_project_enum
-                  defaultValue: 'visible'
+                  type: VARCHAR(100)
+                  defaultValue: 'VISIBLE'
                   constraints:
                     nullable: false
+                    checkConstraint: "check ((status_visible)::text = ANY ((ARRAY ['VISIBLE'::character varying, 'CLOSED'::character varying])::text[])),"
               - column:
                   name: created_at
                   type: BIGINT
