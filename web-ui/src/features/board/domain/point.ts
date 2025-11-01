@@ -34,3 +34,15 @@ export function includeRectInRects(rect1: Rect, rect2: Rect) {
     rect1.y + rect1.height >= rect2.y
   );
 }
+
+export function createRectFromDimensions(
+  point: Point,
+  dimensions: { width: number; height: number },
+): Rect {
+  return {
+    x: point.x,
+    y: point.y,
+    width: dimensions.width,
+    height: dimensions.height,
+  };
+}

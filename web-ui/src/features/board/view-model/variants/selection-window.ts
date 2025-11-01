@@ -1,4 +1,8 @@
-import { includeRectInRects, type Point } from "../../domain/point";
+import {
+  createRectFromDimensions,
+  includeRectInRects,
+  type Point,
+} from "../../domain/point";
 import { createRectFromPoints, type Rect } from "../../domain/rect";
 import { getPointOnScreentToCanvas } from "../../domain/screen-to-canvas";
 import { selectItems, type Selection } from "../../domain/selection";
@@ -22,12 +26,7 @@ export function useSelectionWindowViewModel({
   const getNodes = (state: SelectionWindowViewState, selectionRect: Rect) =>
     nodeModel.nodes.map((node) => {
       const nodeDimension = nodesDimensions[node.id];
-      const nodeRect = {
-        x: node.x,
-        y: node.y,
-        width: nodeDimension.width,
-        height: nodeDimension.height,
-      };
+      const nodeRect = createRectFromDimensions(node, nodeDimension);
       return {
         ...node,
         isSelected:
