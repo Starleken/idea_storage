@@ -32,11 +32,7 @@ export function useNodes() {
     },
   ]);
 
-  const addSticker = ({
-    text,
-    x,
-    y,
-  }: {
+  const addSticker = (data: {
     text: string;
     x: number;
     y: number;
@@ -46,16 +42,23 @@ export function useNodes() {
       {
         id: crypto.randomUUID(),
         type: "sticker",
-        text,
-        x: x,
-        y: y,
+        ...data,
       },
     ]);
+  };
+
+  const deleteNodes = ({
+    ids
+  }: {
+    ids: Set<string>;
+  }) => {
+    setNodes(lastNodes => lastNodes.filter(node => !ids.has(node.id)));
   };
 
   return {
     nodes,
     addSticker,
+    deleteNodes
   };
 }
 
