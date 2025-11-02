@@ -32,11 +32,7 @@ export function useNodes() {
     },
   ]);
 
-  const addSticker = (data: {
-    text: string;
-    x: number;
-    y: number;
-  }) => {
+  const addSticker = (data: { text: string; x: number; y: number }) => {
     setNodes((prevNodes) => [
       ...prevNodes,
       {
@@ -47,18 +43,23 @@ export function useNodes() {
     ]);
   };
 
-  const deleteNodes = ({
-    ids
-  }: {
-    ids: Set<string>;
-  }) => {
-    setNodes(lastNodes => lastNodes.filter(node => !ids.has(node.id)));
+  const updateSticker = (data: { id: string; text: string }) => {
+    setNodes((lastNodes) =>
+      lastNodes.map((node) =>
+        node.id === data.id ? { ...node, text: data.text } : node,
+      ),
+    );
+  };
+
+  const deleteNodes = ({ ids }: { ids: Set<string> }) => {
+    setNodes((lastNodes) => lastNodes.filter((node) => !ids.has(node.id)));
   };
 
   return {
     nodes,
     addSticker,
-    deleteNodes
+    deleteNodes,
+    updateSticker,
   };
 }
 
