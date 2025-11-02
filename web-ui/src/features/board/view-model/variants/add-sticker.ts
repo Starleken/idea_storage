@@ -29,6 +29,9 @@ export function useAddStickerViewModel({
         if (e.code === "Escape") {
           setViewState(goToIdle());
         }
+        if (e.code === "KeyS") {
+          setViewState(goToIdle());
+        }
       },
     },
     actions: {
