@@ -2,14 +2,14 @@ import { getDistanceFromPoints } from "@/features/board/domain/point";
 import { getPointOnScreentToCanvas } from "@/features/board/domain/screen-to-canvas";
 import type { IdleViewState } from ".";
 import type { ViewModelParams } from "../../view-model-params";
-import { goToSelectionWindow } from "../selection-window";
+import { goToNodesDragging } from "../nodes-dragging";
 
-export function useGoToSelectionWindow({
+export function useGoToNodesDragging({
   canvasRect,
   setViewState,
 }: ViewModelParams) {
   const handleMouseMove = (idleState: IdleViewState, e: MouseEvent) => {
-    if (!idleState.mouseDown || idleState.mouseDown.type !== "overlay") return;
+    if (!idleState.mouseDown || idleState.mouseDown.type !== "node") return;
     const currentPoint = getPointOnScreentToCanvas(
       {
         x: e.clientX,
@@ -21,10 +21,13 @@ export function useGoToSelectionWindow({
       return;
     }
     setViewState(
-      goToSelectionWindow({
+      goToNodesDragging({
         start: idleState.mouseDown,
         end: currentPoint,
-        initialSelectedIds: e.shiftKey ? idleState.selectedIds : undefined,
+        nodesToMove: new Set([
+          ...idleState.selectedIds,
+          idleState.mouseDown.nodeId,
+        ]),
       }),
     );
   };

@@ -1,4 +1,3 @@
-import { type Point } from "@/features/board/domain/point";
 import type { ViewModelParams } from "../../view-model-params";
 import type { ViewModel } from "../../view-model-types";
 import { useSelection } from "./use-selection";
@@ -8,27 +7,44 @@ import { useGoToSelectionWindow } from "./use-go-to-selection-window";
 import { useMouseDown } from "./use-mouse-down";
 import { useGoToAddSticker } from "./use-go-to-add-sticker";
 import { useGoToEditSticker } from "./use-go-to-edit-sticker";
+import { useGoToNodesDragging } from "./use-go-to-nodes-dragging";
 
 export type IdleViewState = {
   type: "idle";
   selectedIds: Set<string>;
-  mouseDown?: Point;
+  mouseDown?:
+    | {
+        type: "overlay";
+        x: number;
+        y: number;
+      }
+    | {
+        type: "node";
+        x: number;
+        y: number;
+        nodeId: string;
+      };
 };
 
 export function useIdleViewModel(params: ViewModelParams) {
-  const { setViewState, nodeModel } = params;
+  const { nodeModel } = params;
   const deleteSelection = useDeleteSelected(params);
   const selection = useSelection(params);
   const editSticker = useGoToEditSticker(params);
   const addSticker = useGoToAddSticker(params);
   const mouseDown = useMouseDown(params);
   const selectionWindow = useGoToSelectionWindow(params);
+  const nodesDragging = useGoToNodesDragging(params);
 
   return (idleState: IdleViewState): ViewModel => ({
     nodes: nodeModel.nodes.map((node) => ({
       ...node,
       isSelected: selection.isSelected(idleState, node.id),
-      onClick: (e) => {
+      onMouseDown: (e) => mouseDown.handleNodeMouseDown(idleState, node.id, e),
+      onMouseUp: (e) => {
+        if (!mouseDown.getIsSticketMouseDown(idleState, node.id)) {
+          return;
+        }
         const clickEventResult = editSticker.handleClick(idleState, node.id, e);
         if (clickEventResult.preventNext) return;
         selection.handleNodeClick(idleState, node.id, e);
@@ -43,29 +59,19 @@ export function useIdleViewModel(params: ViewModelParams) {
       },
     },
     overlay: {
-      onMouseDown(e) {
-        mouseDown.handleOverlayMouseDown(idleState, e);
-      },
-      onMouseUp() {
-        selection.clearSelection(idleState);
-      },
+      onMouseDown: (e) => mouseDown.handleOverlayMouseDown(idleState, e),
+      onMouseUp: () => selection.clearSelection(idleState),
     },
     window: {
-      onMouseUp() {
-        setViewState({
-          ...idleState,
-          mouseDown: undefined,
-        });
-      },
-      onMouseMove(e) {
+      onMouseUp: () => mouseDown.clearMouseDown(idleState),
+      onMouseMove: (e) => {
+        nodesDragging.handleMouseMove(idleState, e);
         selectionWindow.handleMouseMove(idleState, e);
       },
     },
     actions: {
       addSticker: {
-        onClick() {
-          addSticker.moveToStickerState();
-        },
+        onClick: () => addSticker.moveToStickerState(),
         isActive: false,
       },
     },

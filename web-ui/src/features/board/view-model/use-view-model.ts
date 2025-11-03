@@ -19,12 +19,17 @@ import {
   useAddStickerViewModel,
   type AddStickerViewState,
 } from "./variants/add-sticker";
+import {
+  useNodesDraggingViewModel,
+  type NodesDraggingViewState,
+} from "./variants/nodes-dragging";
 
 export type ViewState =
   | IdleViewState
   | EditStickerViewState
   | AddStickerViewState
-  | SelectionWindowViewState;
+  | SelectionWindowViewState
+  | NodesDraggingViewState;
 
 export function useViewModel(params: Omit<ViewModelParams, "setViewState">) {
   const [viewState, setViewState] = useState<ViewState>(() => goToIdle());
@@ -39,6 +44,7 @@ export function useViewModel(params: Omit<ViewModelParams, "setViewState">) {
     "add-sticker": useAddStickerViewModel(newParams),
     "selection-window": useSelectionWindowViewModel(newParams),
     "edit-sticker": useEditStickerViewModel(newParams),
+    "nodes-dragging": useNodesDraggingViewModel(newParams),
   };
   let viewModel: ViewModel;
   switch (viewState.type) {
@@ -46,7 +52,6 @@ export function useViewModel(params: Omit<ViewModelParams, "setViewState">) {
       viewModel = states["add-sticker"]();
       break;
     case "edit-sticker":
-      console.log(viewState);
       viewModel = states["edit-sticker"](viewState);
       break;
     case "idle":
@@ -54,6 +59,10 @@ export function useViewModel(params: Omit<ViewModelParams, "setViewState">) {
       break;
     case "selection-window":
       viewModel = states["selection-window"](viewState);
+      break;
+    case "nodes-dragging":
+      console.log(viewState);
+      viewModel = states["nodes-dragging"](viewState);
       break;
     default:
       throw new Error("Invalid view state");

@@ -31,7 +31,9 @@ export function useGoToEditSticker({ setViewState }: ViewModelParams) {
       !e.shiftKey &&
       !e.ctrlKey &&
       !e.altKey &&
-      !e.metaKey
+      !e.metaKey &&
+      e.key !== "Backspace" &&
+      e.key !== "Delete"
     ) {
       const [id] = idleState.selectedIds.values();
       setViewState(goToEditSticker({ stickerId: id }));
