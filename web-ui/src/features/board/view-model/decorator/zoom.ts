@@ -1,4 +1,4 @@
-import { getVectorFromPoints } from "../../domain/point";
+import { getDifferencePoints } from "../../domain/point";
 import { getPointOnScreentToCanvas } from "../../domain/screen-to-canvas";
 import type { ViewModelParams } from "../view-model-params";
 import type { ViewModel } from "../view-model-types";
@@ -34,7 +34,7 @@ export function useZoomDecorator({
             },
             canvasRect,
           );
-          const diff = getVectorFromPoints(currentPoint, newPoint);
+          const diff = getDifferencePoints(currentPoint, newPoint);
           windowPositionModel.setPosition((prev) => ({
             x: prev.x - diff.x,
             y: prev.y - diff.y,

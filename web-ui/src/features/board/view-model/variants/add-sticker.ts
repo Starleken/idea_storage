@@ -37,16 +37,6 @@ export function useAddStickerViewModel({
         );
       },
     },
-    layout: {
-      onKeyDown(e) {
-        if (e.code === "Escape") {
-          setViewState(goToIdle());
-        }
-        if (e.code === "KeyS") {
-          setViewState(goToIdle());
-        }
-      },
-    },
     actions: {
       addSticker: {
         onClick() {

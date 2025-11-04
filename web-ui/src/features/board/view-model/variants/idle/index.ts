@@ -5,7 +5,6 @@ import { type Selection } from "@/features/board/domain/selection";
 import { useDeleteSelected } from "./use-delete-selected";
 import { useGoToSelectionWindow } from "./use-go-to-selection-window";
 import { useMouseDown } from "./use-mouse-down";
-import { useGoToAddSticker } from "./use-go-to-add-sticker";
 import { useGoToEditSticker } from "./use-go-to-edit-sticker";
 import { useGoToNodesDragging } from "./use-go-to-nodes-dragging";
 import { useGoToWindowDragging } from "./use-go-to-window-dragging";
@@ -34,7 +33,6 @@ export function useIdleViewModel(params: ViewModelParams) {
   const deleteSelection = useDeleteSelected(params);
   const selection = useSelection(params);
   const editSticker = useGoToEditSticker(params);
-  const addSticker = useGoToAddSticker(params);
   const mouseDown = useMouseDown(params);
   const selectionWindow = useGoToSelectionWindow(params);
   const nodesDragging = useGoToNodesDragging(params);
@@ -58,7 +56,6 @@ export function useIdleViewModel(params: ViewModelParams) {
       onKeyDown(e) {
         const keyDownResult = editSticker.handleKeydown(idleState, e);
         if (keyDownResult.preventNext) return;
-        addSticker.handleKeyDown(e);
         deleteSelection.handleKeyDown(idleState, e);
       },
     },
@@ -72,12 +69,6 @@ export function useIdleViewModel(params: ViewModelParams) {
         nodesDragging.handleMouseMove(idleState, e);
         selectionWindow.handleMouseMove(idleState, e);
         windowDragging.handleMouseMove(idleState, e);
-      },
-    },
-    actions: {
-      addSticker: {
-        onClick: () => addSticker.moveToStickerState(),
-        isActive: false,
       },
     },
   });

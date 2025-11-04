@@ -1,4 +1,9 @@
-import { getVectorFromPoints, type Point } from "../../domain/point";
+import {
+  addPoints,
+  getDifferencePoints,
+  isRelativePoint,
+  type Point,
+} from "../../domain/point";
 import { getPointOnScreentToCanvas } from "../../domain/screen-to-canvas";
 import { type Selection } from "../../domain/selection";
 import type { ViewModelParams } from "../view-model-params";
@@ -18,21 +23,34 @@ export function useNodesDraggingViewModel({
   windowPositionModel,
   canvasRect,
 }: ViewModelParams) {
-  const getNodes = (state: NodesDraggingViewState) =>
-    nodeModel.nodes.map((node) => {
+  const getNodes = (state: NodesDraggingViewState) => {
+    return nodeModel.nodes.map((node) => {
       if (state.nodesToMove.has(node.id)) {
-        const diff = getVectorFromPoints(state.start, state.end);
+        const diff = getDifferencePoints(state.start, state.end);
+
+        if (node.type === "arrow") {
+          return {
+            ...node,
+            start: isRelativePoint(node.start)
+              ? node.start
+              : addPoints(node.start, diff),
+            end: isRelativePoint(node.end)
+              ? node.end
+              : addPoints(node.end, diff),
+            isSelected: true,
+          };
+        }
 
         return {
           ...node,
-          x: node.x + diff.x,
-          y: node.y + diff.y,
+          ...addPoints(node, diff),
           isSelected: true,
         };
       }
 
       return node;
     });
+  };
 
   return (viewState: NodesDraggingViewState): ViewModel => {
     const nodes = getNodes(viewState);
@@ -54,9 +72,38 @@ export function useNodesDraggingViewModel({
           });
         },
         onMouseUp() {
-          const nodesToMove = nodes.filter((node) =>
-            viewState.nodesToMove.has(node.id),
-          );
+          const nodesToMove = nodes
+            .filter((node) => viewState.nodesToMove.has(node.id))
+            .flatMap((node) => {
+              if (node.type === "arrow") {
+                return [
+                  {
+                    id: node.id,
+                    point: {
+                      ...node.start,
+                    },
+                    type: "start" as const,
+                  },
+                  {
+                    id: node.id,
+                    point: {
+                      ...node.end,
+                    },
+                    type: "end" as const,
+                  },
+                ];
+              }
+
+              return [
+                {
+                  id: node.id,
+                  point: {
+                    x: node.x,
+                    y: node.y,
+                  },
+                },
+              ];
+            });
           nodeModel.updateNodesPositions(nodesToMove);
           setViewState(
             goToIdle({

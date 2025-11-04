@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { Point } from "../domain/point";
 
 type NodeBase = {
   id: string;
@@ -12,7 +13,13 @@ type StickerNode = NodeBase & {
   y: number;
 };
 
-type Node = StickerNode;
+type ArrowNode = NodeBase & {
+  type: "arrow";
+  start: Point;
+  end: Point;
+};
+
+export type Node = StickerNode | ArrowNode;
 
 export function useNodes() {
   const [nodes, setNodes] = useState<Node[]>([
@@ -30,6 +37,20 @@ export function useNodes() {
       x: 200,
       y: 200,
     },
+    {
+      id: "3",
+      type: "arrow",
+      start: {
+        x: 10,
+        y: 10,
+        relativeTo: "1",
+      },
+      end: {
+        x: 20,
+        y: 20,
+        relativeTo: "2",
+      },
+    },
   ]);
 
   const addSticker = (data: { text: string; x: number; y: number }) => {
@@ -37,9 +58,22 @@ export function useNodes() {
     setNodes((prevNodes) => [
       ...prevNodes,
       {
+        ...data,
         id: id,
         type: "sticker",
+      },
+    ]);
+    return { id };
+  };
+
+  const addArrow = (data: { start: Point; end: Point }) => {
+    const id = crypto.randomUUID();
+    setNodes((prevNodes) => [
+      ...prevNodes,
+      {
         ...data,
+        id: id,
+        type: "arrow",
       },
     ]);
     return { id };
@@ -54,19 +88,55 @@ export function useNodes() {
   };
 
   const deleteNodes = ({ ids }: { ids: Set<string> }) => {
-    setNodes((lastNodes) => lastNodes.filter((node) => !ids.has(node.id)));
+    setNodes((lastNodes) => {
+      const arrowsRelativeIds = lastNodes
+        .filter(
+          (node) =>
+            (node.type === "arrow" &&
+              node.start.relativeTo &&
+              ids.has(node.start.relativeTo)) ||
+            (node.type === "arrow" &&
+              node.end.relativeTo &&
+              ids.has(node.end.relativeTo)),
+        )
+        .map((node) => node.id);
+
+      return lastNodes.filter(
+        (node) => !ids.has(node.id) && !arrowsRelativeIds.includes(node.id),
+      );
+    });
   };
 
   const updateNodesPositions = (
-    positions: { id: string; x: number; y: number }[],
+    positions: {
+      id: string;
+      point: Point;
+      type?: "start" | "end";
+    }[],
   ) => {
-    const record = Object.fromEntries(positions.map((pos) => [pos.id, pos]));
+    const record = Object.fromEntries(
+      positions.map((p) => [`${p.id}${p.type ?? ""}`, p]),
+    );
+
     setNodes((lastNodes) =>
       lastNodes.map((node) => {
-        const newPosition = record[node.id];
-        if (newPosition) {
-          return { ...node, x: newPosition.x, y: newPosition.y };
+        if (node.type === "arrow") {
+          const newPosition = record[`${node.id}start`];
+          const newEndPosition = record[`${node.id}end`];
+
+          return {
+            ...node,
+            start: newPosition?.point ?? node.start,
+            end: newEndPosition?.point ?? node.end,
+          };
         }
+        if (node.type === "sticker") {
+          const newPosition = record[node.id];
+          if (newPosition) {
+            return { ...node, ...newPosition.point };
+          }
+        }
+
         return node;
       }),
     );
@@ -78,6 +148,7 @@ export function useNodes() {
     deleteNodes,
     updateSticker,
     updateNodesPositions,
+    addArrow,
   };
 }
 

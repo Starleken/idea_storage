@@ -28,6 +28,16 @@ import {
   type WindowDraggingViewState,
 } from "./variants/window-dragging";
 import { useZoomDecorator } from "./decorator/zoom";
+import {
+  useAddArrowViewModel,
+  type AddArrowViewState,
+} from "./variants/add-arrow";
+import { useCommonActionsDecorator } from "./decorator/common-actions";
+import {
+  useDrawArrowViewModel,
+  type DrawArrowViewState,
+} from "./variants/draw-arrow";
+import { useResolveRelativeStaticDecorator } from "./decorator/resolve-relative";
 
 export type ViewState =
   | IdleViewState
@@ -35,7 +45,9 @@ export type ViewState =
   | AddStickerViewState
   | SelectionWindowViewState
   | NodesDraggingViewState
-  | WindowDraggingViewState;
+  | WindowDraggingViewState
+  | AddArrowViewState
+  | DrawArrowViewState;
 
 export function useViewModel(params: Omit<ViewModelParams, "setViewState">) {
   const [viewState, setViewState] = useState<ViewState>(() => goToIdle());
@@ -45,6 +57,7 @@ export function useViewModel(params: Omit<ViewModelParams, "setViewState">) {
     setViewState,
   };
   const zoomDecorator = useZoomDecorator(newParams);
+  const commonActionsDecorator = useCommonActionsDecorator(newParams);
   const states = {
     idle: useIdleViewModel(newParams),
     "add-sticker": useAddStickerViewModel(newParams),
@@ -52,17 +65,25 @@ export function useViewModel(params: Omit<ViewModelParams, "setViewState">) {
     "edit-sticker": useEditStickerViewModel(newParams),
     "nodes-dragging": useNodesDraggingViewModel(newParams),
     "window-dragging": useWindowDraggingViewModel(newParams),
+    "add-arrow": useAddArrowViewModel(newParams),
+    "draw-arrow": useDrawArrowViewModel(newParams),
   };
   let viewModel: ViewModel;
   switch (viewState.type) {
     case "add-sticker":
-      viewModel = states["add-sticker"]();
+      viewModel = commonActionsDecorator(states["add-sticker"]());
+      break;
+    case "add-arrow":
+      viewModel = commonActionsDecorator(states["add-arrow"]());
+      break;
+    case "draw-arrow":
+      viewModel = states["draw-arrow"](viewState);
+      break;
+    case "idle":
+      viewModel = commonActionsDecorator(states["idle"](viewState));
       break;
     case "edit-sticker":
       viewModel = states["edit-sticker"](viewState);
-      break;
-    case "idle":
-      viewModel = states["idle"](viewState);
       break;
     case "selection-window":
       viewModel = states["selection-window"](viewState);
@@ -73,8 +94,11 @@ export function useViewModel(params: Omit<ViewModelParams, "setViewState">) {
     case "window-dragging":
       viewModel = states["window-dragging"](viewState);
       break;
+
     default:
       throw new Error("Invalid view state");
   }
-  return zoomDecorator(viewModel);
+  viewModel = zoomDecorator(viewModel);
+  viewModel = useResolveRelativeStaticDecorator(viewModel);
+  return viewModel;
 }

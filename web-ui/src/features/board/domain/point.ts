@@ -3,9 +3,14 @@ import type { Rect } from "./rect";
 export type Point = {
   x: number;
   y: number;
+  relativeTo?: string;
 };
 
-export function getVectorFromPoints(point1: Point, point2: Point) {
+export type RelativePoint = Point & {
+  relativeTo: string;
+};
+
+export function getDifferencePoints(point1: Point, point2: Point) {
   return {
     x: point2.x - point1.x,
     y: point2.y - point1.y,
@@ -13,7 +18,7 @@ export function getVectorFromPoints(point1: Point, point2: Point) {
 }
 
 export function getDistanceFromPoints(point1: Point, point2: Point) {
-  const vector = getVectorFromPoints(point1, point2);
+  const vector = getDifferencePoints(point1, point2);
   return Math.sqrt(vector.x ** 2 + vector.y ** 2);
 }
 
@@ -45,4 +50,32 @@ export function createRectFromDimensions(
     width: dimensions.width,
     height: dimensions.height,
   };
+}
+
+export function addPoints(point1: Point, point2: Point): Point {
+  return {
+    x: point1.x + point2.x,
+    y: point1.y + point2.y,
+  };
+}
+
+export type RelativeBase = Record<string, Point>;
+
+export function resolveRelativePoint(base: RelativeBase, point: Point): Point {
+  let relativeTo = point.relativeTo;
+  let newPoint = point;
+  while (relativeTo) {
+    const basePoint = base[relativeTo];
+
+    if (basePoint) {
+      newPoint = addPoints(newPoint, basePoint);
+    }
+
+    relativeTo = basePoint?.relativeTo;
+  }
+  return newPoint;
+}
+
+export function isRelativePoint(point: Point): point is RelativePoint {
+  return "relativeTo" in point;
 }

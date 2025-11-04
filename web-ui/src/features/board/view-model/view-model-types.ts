@@ -1,8 +1,10 @@
+import type { Point } from "../domain/point";
 import type { Rect } from "../domain/rect";
 import type { WindowPosition } from "../model/window-position";
 
-type ViewModelNode = {
+type ViewModelStickerNode = {
   id: string;
+  type: "sticker";
   text: string;
   x: number;
   y: number;
@@ -14,6 +16,20 @@ type ViewModelNode = {
   onMouseUp?: (e: React.MouseEvent) => void;
 };
 
+type ViewModelArrowNode = {
+  id: string;
+  type: "arrow";
+  start: Point;
+  end: Point;
+  isSelected?: boolean;
+  noPointerEvents?: boolean;
+  onClick?: (e: React.MouseEvent) => void;
+  onMouseDown?: (e: React.MouseEvent) => void;
+  onMouseUp?: (e: React.MouseEvent) => void;
+};
+
+type ViewModelNode = ViewModelStickerNode | ViewModelArrowNode;
+
 export type ViewModel = {
   nodes: ViewModelNode[];
   selectionWindow?: Rect;
@@ -23,12 +39,6 @@ export type ViewModel = {
   };
   canvas?: {
     onClick?: (e: React.MouseEvent) => void;
-  };
-  actions?: {
-    addSticker?: {
-      onClick?: (e: React.MouseEvent) => void;
-      isActive?: boolean;
-    };
   };
   overlay?: {
     onClick?: (e: React.MouseEvent) => void;
@@ -40,4 +50,13 @@ export type ViewModel = {
     onMouseMove?: (e: MouseEvent) => void;
     onMouseWheel?: (e: WheelEvent) => void;
   };
+  actions?: {
+    addSticker?: ViewModelAction;
+    addArrow?: ViewModelAction;
+  };
+};
+
+export type ViewModelAction = {
+  onClick?: (e: React.MouseEvent) => void;
+  isActive?: boolean;
 };

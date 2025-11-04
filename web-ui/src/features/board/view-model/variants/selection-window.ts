@@ -1,11 +1,13 @@
 import {
   createRectFromDimensions,
   includeRectInRects,
+  resolveRelativePoint,
   type Point,
 } from "../../domain/point";
 import { createRectFromPoints, type Rect } from "../../domain/rect";
 import { getPointOnScreentToCanvas } from "../../domain/screen-to-canvas";
 import { selectItems, type Selection } from "../../domain/selection";
+import { createRelativeBase } from "../decorator/resolve-relative";
 import type { ViewModelParams } from "../view-model-params";
 import type { ViewModel } from "../view-model-types";
 import { goToIdle } from "./idle";
@@ -24,10 +26,17 @@ export function useSelectionWindowViewModel({
   windowPositionModel,
   nodesDimensions,
 }: ViewModelParams) {
-  const getNodes = (state: SelectionWindowViewState, selectionRect: Rect) =>
-    nodeModel.nodes.map((node) => {
+  const getNodes = (state: SelectionWindowViewState, selectionRect: Rect) => {
+    const relativeBase = createRelativeBase(nodeModel.nodes);
+    return nodeModel.nodes.map((node) => {
       const nodeDimension = nodesDimensions[node.id];
-      const nodeRect = createRectFromDimensions(node, nodeDimension);
+      const nodeRect =
+        node.type === "sticker"
+          ? createRectFromDimensions(node, nodeDimension)
+          : createRectFromPoints(
+              resolveRelativePoint(relativeBase, node.start),
+              resolveRelativePoint(relativeBase, node.end),
+            );
       return {
         ...node,
         isSelected:
@@ -35,6 +44,7 @@ export function useSelectionWindowViewModel({
           state.initialSelectedIds.has(node.id),
       };
     });
+  };
 
   return (viewState: SelectionWindowViewState): ViewModel => {
     const rect = createRectFromPoints(viewState.start, viewState.end);

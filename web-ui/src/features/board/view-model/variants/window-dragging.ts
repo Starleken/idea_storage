@@ -1,4 +1,4 @@
-import { getVectorFromPoints, type Point } from "../../domain/point";
+import { getDifferencePoints, type Point } from "../../domain/point";
 import { getPointOnScreentToCanvas } from "../../domain/screen-to-canvas";
 import type { Selection } from "../../domain/selection";
 import type { ViewModelParams } from "../view-model-params";
@@ -19,7 +19,7 @@ export function useWindowDraggingViewModel({
   windowPositionModel,
 }: ViewModelParams) {
   return (viewState: WindowDraggingViewState): ViewModel => {
-    const diff = getVectorFromPoints(viewState.start, viewState.end);
+    const diff = getDifferencePoints(viewState.start, viewState.end);
     return {
       nodes: nodeModel.nodes.map((node) => {
         if (viewState.storedIds.has(node.id)) {

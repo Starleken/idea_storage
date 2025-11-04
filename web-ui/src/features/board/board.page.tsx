@@ -1,4 +1,4 @@
-import { ArrowRightIcon, StickerIcon } from "lucide-react";
+import { ArrowUpLeftIcon, StickerIcon } from "lucide-react";
 import { useNodes } from "./model/nodes";
 import { useCanvasRect } from "./hooks/use-canvas-rect";
 import { useLayoutFocus } from "./hooks/use-layout-focus";
@@ -9,11 +9,12 @@ import { Layout } from "./ui/layout";
 import { Dots } from "./ui/dots";
 import { Overlay } from "./ui/overlay";
 import { Canvas } from "./ui/canvas";
-import { Sticker } from "./ui/sticker";
+import { Sticker } from "./ui/nodes/sticker";
 import { Actions } from "./ui/actions";
 import { ActionButton } from "./ui/action-button";
 import { useNodesDimensions } from "./hooks/use-nodes-dimensions";
 import { useWindowPositionModel } from "./model/window-position";
+import { Arrow } from "./ui/nodes/arrow";
 
 export function BoardPage() {
   const nodeModel = useNodes();
@@ -45,9 +46,14 @@ export function BoardPage() {
         windowPosition={windowPosition}
         onClick={viewModel.canvas?.onClick}
       >
-        {viewModel.nodes.map((node) => (
-          <Sticker key={node.id} ref={nodeRef} {...node} />
-        ))}
+        {viewModel.nodes.map((node) => {
+          if (node.type === "sticker") {
+            return <Sticker key={node.id} ref={nodeRef} {...node} />;
+          }
+          if (node.type === "arrow") {
+            return <Arrow ref={nodeRef} key={node.id} {...node} />;
+          }
+        })}
         {viewModel.selectionWindow && (
           <SelectionWindow {...viewModel.selectionWindow} />
         )}
@@ -60,8 +66,11 @@ export function BoardPage() {
         >
           <StickerIcon />
         </ActionButton>
-        <ActionButton isActive={false} onClick={(e) => console.log(e)}>
-          <ArrowRightIcon />
+        <ActionButton
+          isActive={viewModel.actions?.addArrow?.isActive}
+          onClick={viewModel.actions?.addArrow?.onClick}
+        >
+          <ArrowUpLeftIcon />
         </ActionButton>
       </Actions>
     </Layout>
