@@ -8,6 +8,7 @@ import { useMouseDown } from "./use-mouse-down";
 import { useGoToAddSticker } from "./use-go-to-add-sticker";
 import { useGoToEditSticker } from "./use-go-to-edit-sticker";
 import { useGoToNodesDragging } from "./use-go-to-nodes-dragging";
+import { useGoToWindowDragging } from "./use-go-to-window-dragging";
 
 export type IdleViewState = {
   type: "idle";
@@ -17,12 +18,14 @@ export type IdleViewState = {
         type: "overlay";
         x: number;
         y: number;
+        isRightClick: boolean;
       }
     | {
         type: "node";
         x: number;
         y: number;
         nodeId: string;
+        isRightClick: boolean;
       };
 };
 
@@ -35,6 +38,7 @@ export function useIdleViewModel(params: ViewModelParams) {
   const mouseDown = useMouseDown(params);
   const selectionWindow = useGoToSelectionWindow(params);
   const nodesDragging = useGoToNodesDragging(params);
+  const windowDragging = useGoToWindowDragging(params);
 
   return (idleState: IdleViewState): ViewModel => ({
     nodes: nodeModel.nodes.map((node) => ({
@@ -67,6 +71,7 @@ export function useIdleViewModel(params: ViewModelParams) {
       onMouseMove: (e) => {
         nodesDragging.handleMouseMove(idleState, e);
         selectionWindow.handleMouseMove(idleState, e);
+        windowDragging.handleMouseMove(idleState, e);
       },
     },
     actions: {

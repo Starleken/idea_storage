@@ -23,13 +23,19 @@ import {
   useNodesDraggingViewModel,
   type NodesDraggingViewState,
 } from "./variants/nodes-dragging";
+import {
+  useWindowDraggingViewModel,
+  type WindowDraggingViewState,
+} from "./variants/window-dragging";
+import { useZoomDecorator } from "./decorator/zoom";
 
 export type ViewState =
   | IdleViewState
   | EditStickerViewState
   | AddStickerViewState
   | SelectionWindowViewState
-  | NodesDraggingViewState;
+  | NodesDraggingViewState
+  | WindowDraggingViewState;
 
 export function useViewModel(params: Omit<ViewModelParams, "setViewState">) {
   const [viewState, setViewState] = useState<ViewState>(() => goToIdle());
@@ -38,13 +44,14 @@ export function useViewModel(params: Omit<ViewModelParams, "setViewState">) {
     ...params,
     setViewState,
   };
-
+  const zoomDecorator = useZoomDecorator(newParams);
   const states = {
     idle: useIdleViewModel(newParams),
     "add-sticker": useAddStickerViewModel(newParams),
     "selection-window": useSelectionWindowViewModel(newParams),
     "edit-sticker": useEditStickerViewModel(newParams),
     "nodes-dragging": useNodesDraggingViewModel(newParams),
+    "window-dragging": useWindowDraggingViewModel(newParams),
   };
   let viewModel: ViewModel;
   switch (viewState.type) {
@@ -61,11 +68,13 @@ export function useViewModel(params: Omit<ViewModelParams, "setViewState">) {
       viewModel = states["selection-window"](viewState);
       break;
     case "nodes-dragging":
-      console.log(viewState);
       viewModel = states["nodes-dragging"](viewState);
+      break;
+    case "window-dragging":
+      viewModel = states["window-dragging"](viewState);
       break;
     default:
       throw new Error("Invalid view state");
   }
-  return viewModel;
+  return zoomDecorator(viewModel);
 }

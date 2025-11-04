@@ -15,6 +15,7 @@ export type NodesDraggingViewState = {
 export function useNodesDraggingViewModel({
   nodeModel,
   setViewState,
+  windowPositionModel,
   canvasRect,
 }: ViewModelParams) {
   const getNodes = (state: NodesDraggingViewState) =>
@@ -44,6 +45,7 @@ export function useNodesDraggingViewModel({
               x: e.clientX,
               y: e.clientY,
             },
+            windowPositionModel.position,
             canvasRect,
           );
           setViewState({

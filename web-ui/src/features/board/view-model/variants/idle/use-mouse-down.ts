@@ -3,7 +3,11 @@ import type React from "react";
 import type { IdleViewState } from ".";
 import type { ViewModelParams } from "../../view-model-params";
 
-export function useMouseDown({ canvasRect, setViewState }: ViewModelParams) {
+export function useMouseDown({
+  canvasRect,
+  setViewState,
+  windowPositionModel,
+}: ViewModelParams) {
   const handleOverlayMouseDown = (
     idleState: IdleViewState,
     e: React.MouseEvent,
@@ -13,6 +17,7 @@ export function useMouseDown({ canvasRect, setViewState }: ViewModelParams) {
         x: e.clientX,
         y: e.clientY,
       },
+      windowPositionModel.position,
       canvasRect,
     );
     setViewState({
@@ -20,6 +25,7 @@ export function useMouseDown({ canvasRect, setViewState }: ViewModelParams) {
       mouseDown: {
         ...point,
         type: "overlay",
+        isRightClick: e.button === 2,
       },
     });
   };
@@ -34,6 +40,7 @@ export function useMouseDown({ canvasRect, setViewState }: ViewModelParams) {
         x: e.clientX,
         y: e.clientY,
       },
+      windowPositionModel.position,
       canvasRect,
     );
     setViewState({
@@ -42,6 +49,7 @@ export function useMouseDown({ canvasRect, setViewState }: ViewModelParams) {
         ...point,
         type: "node",
         nodeId,
+        isRightClick: e.button === 2,
       },
     });
   };

@@ -33,14 +33,16 @@ export function useNodes() {
   ]);
 
   const addSticker = (data: { text: string; x: number; y: number }) => {
+    const id = crypto.randomUUID();
     setNodes((prevNodes) => [
       ...prevNodes,
       {
-        id: crypto.randomUUID(),
+        id: id,
         type: "sticker",
         ...data,
       },
     ]);
+    return { id };
   };
 
   const updateSticker = (data: { id: string; text: string }) => {

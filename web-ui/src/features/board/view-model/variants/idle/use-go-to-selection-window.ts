@@ -7,14 +7,21 @@ import { goToSelectionWindow } from "../selection-window";
 export function useGoToSelectionWindow({
   canvasRect,
   setViewState,
+  windowPositionModel,
 }: ViewModelParams) {
   const handleMouseMove = (idleState: IdleViewState, e: MouseEvent) => {
-    if (!idleState.mouseDown || idleState.mouseDown.type !== "overlay") return;
+    if (
+      !idleState.mouseDown ||
+      idleState.mouseDown.type !== "overlay" ||
+      idleState.mouseDown.isRightClick
+    )
+      return;
     const currentPoint = getPointOnScreentToCanvas(
       {
         x: e.clientX,
         y: e.clientY,
       },
+      windowPositionModel.position,
       canvasRect,
     );
     if (getDistanceFromPoints(idleState.mouseDown, currentPoint) <= 5) {
