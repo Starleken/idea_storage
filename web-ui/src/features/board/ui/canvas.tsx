@@ -1,17 +1,35 @@
 import type React from "react";
 import type { Ref } from "react";
+import type { WindowPosition } from "../model/window-position";
 
 export function Canvas({
   children,
   ref,
+  windowPosition,
+  overlay,
   ...props
 }: {
   children: React.ReactNode;
   ref: Ref<HTMLDivElement>;
+  overlay?: React.ReactNode;
+  windowPosition: WindowPosition;
 } & React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div {...props} ref={ref} className="absolute inset-0 select-none">
-      {children}
+    <div
+      {...props}
+      ref={ref}
+      onContextMenu={(e) => e.preventDefault()}
+      className="absolute inset-0 select-none overflow-hidden"
+    >
+      {overlay}
+      <div
+        style={{
+          transformOrigin: `left top`,
+          transform: `scale(${windowPosition?.zoom}) translate(${-windowPosition.x}px, ${-windowPosition.y}px)`,
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 }

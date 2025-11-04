@@ -1,4 +1,4 @@
-import { ArrowRightIcon, StickerIcon } from "lucide-react";
+import { ArrowUpLeftIcon, StickerIcon } from "lucide-react";
 import { useNodes } from "./model/nodes";
 import { useCanvasRect } from "./hooks/use-canvas-rect";
 import { useLayoutFocus } from "./hooks/use-layout-focus";
@@ -9,47 +9,56 @@ import { Layout } from "./ui/layout";
 import { Dots } from "./ui/dots";
 import { Overlay } from "./ui/overlay";
 import { Canvas } from "./ui/canvas";
-import { Sticker } from "./ui/sticker";
+import { Sticker } from "./ui/nodes/sticker";
 import { Actions } from "./ui/actions";
 import { ActionButton } from "./ui/action-button";
-import { useNodesRects } from "./hooks/use-nodes-rects";
+import { useNodesDimensions } from "./hooks/use-nodes-dimensions";
+import { useWindowPositionModel } from "./model/window-position";
+import { Arrow } from "./ui/nodes/arrow";
 
 export function BoardPage() {
   const nodeModel = useNodes();
+  const windowPositionModel = useWindowPositionModel();
   const { canvasRef, canvasRect } = useCanvasRect();
   const layoutRef = useLayoutFocus();
-  const { nodeRef } = useNodesRects();
+  const { nodeRef, nodesDimensions } = useNodesDimensions();
   const viewModel = useViewModel({
     canvasRect,
     nodeModel,
+    nodesDimensions,
+    windowPositionModel,
   });
   useWindowEvents(viewModel);
-
+  const windowPosition =
+    viewModel.windowPosition ?? windowPositionModel.position;
   return (
     <Layout ref={layoutRef} onKeyDown={viewModel.layout?.onKeyDown}>
-      <Dots />
-      <Canvas ref={canvasRef} onClick={viewModel.canvas?.onClick}>
-        <Overlay
-          onClick={viewModel.overlay?.onClick}
-          onMouseDown={viewModel.overlay?.onMouseDown}
-          onMouseUp={viewModel.overlay?.onMouseUp}
-        />
-        {viewModel.nodes.map((node) => (
-          <Sticker
-            id={node.id}
-            ref={nodeRef}
-            selected={node.isSelected}
-            onClick={node.onClick}
-            key={node.id}
-            text={node.text}
-            x={node.x}
-            y={node.y}
+      <Dots windowPosition={windowPosition} />
+      <Canvas
+        ref={canvasRef}
+        overlay={
+          <Overlay
+            onClick={viewModel.overlay?.onClick}
+            onMouseDown={viewModel.overlay?.onMouseDown}
+            onMouseUp={viewModel.overlay?.onMouseUp}
           />
-        ))}
+        }
+        windowPosition={windowPosition}
+        onClick={viewModel.canvas?.onClick}
+      >
+        {viewModel.nodes.map((node) => {
+          if (node.type === "sticker") {
+            return <Sticker key={node.id} ref={nodeRef} {...node} />;
+          }
+          if (node.type === "arrow") {
+            return <Arrow ref={nodeRef} key={node.id} {...node} />;
+          }
+        })}
+        {viewModel.selectionWindow && (
+          <SelectionWindow {...viewModel.selectionWindow} />
+        )}
       </Canvas>
-      {viewModel.selectionWindow && (
-        <SelectionWindow {...viewModel.selectionWindow} />
-      )}
+
       <Actions>
         <ActionButton
           isActive={viewModel.actions?.addSticker?.isActive}
@@ -57,8 +66,11 @@ export function BoardPage() {
         >
           <StickerIcon />
         </ActionButton>
-        <ActionButton isActive={false} onClick={(e) => console.log(e)}>
-          <ArrowRightIcon />
+        <ActionButton
+          isActive={viewModel.actions?.addArrow?.isActive}
+          onClick={viewModel.actions?.addArrow?.onClick}
+        >
+          <ArrowUpLeftIcon />
         </ActionButton>
       </Actions>
     </Layout>
