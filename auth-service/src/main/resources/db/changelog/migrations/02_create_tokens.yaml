@@ -1,0 +1,53 @@
+databaseChangeLog:
+  - changeSet:
+      id: 6_create_tokens
+      author: betrayal
+      changes:
+        - createTable:
+            tableName: tokens
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  defaultValueComputed: 'gen_random_uuid()'
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_tokens_users
+                    references: users(id)
+              - column:
+                  name: token
+                  type: VARCHAR(300)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: device_info
+                  type: VARCHAR(200)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: ip_address
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expired_at
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: revoked_at
+                  type: BIGINT
+                  constraints:
+                    nullable: true

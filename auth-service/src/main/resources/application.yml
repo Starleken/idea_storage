@@ -1,0 +1,26 @@
+spring:
+  config:
+    import: file:.env[.properties]
+  application:
+    name: protobin_auth
+  datasource:
+    username: ${DATA_USERNAME}
+    password: ${DATA_PASSWORD}
+    url: jdbc:postgresql://${DATA_HOST}:${DATA_PORT}/${DATA_NAME}
+  liquibase:
+    change-log: classpath:db/changelog/master.yml
+    enabled: true
+    user: ${DATA_USERNAME}
+    password: ${DATA_PASSWORD}
+    url: jdbc:postgresql://${DATA_HOST}:${DATA_PORT}/${DATA_NAME}
+  output:
+    ansi:
+      enabled: always
+
+jwt:
+  access:
+    secretKey: ${ACCESS_SECRET_KEY}
+    ttlMinutes: ${ACCESS_TTL_MINUTES}
+  refresh:
+    secretKey: ${REFRESH_SECRET_KEY}
+    ttlMinutes: ${REFRESH_TTL_MINUTES}

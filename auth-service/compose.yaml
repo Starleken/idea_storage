@@ -1,0 +1,11 @@
+services:
+  pg_auth_protobin:
+    image: "postgis/postgis:15-3.4"
+    container_name: pg_auth_protobin
+    environment:
+      - "POSTGRES_DB=pg_auth_protobin"
+      - "POSTGRES_PASSWORD=admin"
+      - "POSTGRES_USER=admin"
+      - "TZ=UTC"
+    ports:
+      - "5434:5432"
