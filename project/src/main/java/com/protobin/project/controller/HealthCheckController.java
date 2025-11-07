@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,8 @@ public class HealthCheckController {
     @GetMapping("v1/health")
     @Operation(
             summary = "Получить состояние сервера",
-            description = "Если приходит ответ, значит API в исправном состоянии"
+            description = "Если приходит ответ, значит API в исправном состоянии",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @ApiResponse(responseCode = "200", description = "Состояние сервера в исправном состоянии" )
     public ResponseEntity<ResponseDto> getHealthStatus() {
