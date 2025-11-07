@@ -3,6 +3,7 @@ package com.protobin.authservice.service.impl;
 import com.protobin.authservice.dto.token.RefreshTokenResponseDto;
 import com.protobin.authservice.entity.RequestInfo;
 import com.protobin.authservice.entity.TokenEntity;
+import com.protobin.authservice.entity.TokenHolder;
 import com.protobin.authservice.entity.UserEntity;
 import com.protobin.authservice.exception.TokenIsUsedException;
 import com.protobin.authservice.repository.TokenRepository;
@@ -117,14 +118,14 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     @Transactional(noRollbackFor = TokenIsUsedException.class)
-    public RefreshTokenResponseDto refresh(String token, RequestInfo request) {
+    public TokenHolder refresh(String token, RequestInfo request) {
         var entity = tokenRepository.findByToken(token)
                 .orElseThrow(() -> getEntityNotFoundException(TokenEntity.class));
 
         validateRefreshToken(entity.getToken());
         revokeToken(entity.getId());
 
-        return RefreshTokenResponseDto.builder()
+        return TokenHolder.builder()
                 .accessToken(generateAccessToken(entity.getUser().getId()))
                 .refreshToken(generateRefreshToken(entity.getUser().getId(), request))
                 .build();

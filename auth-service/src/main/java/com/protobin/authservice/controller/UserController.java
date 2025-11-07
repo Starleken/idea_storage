@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,7 +58,7 @@ public class UserController {
 
     @Operation(
             summary = "Авторизация пользователя",
-            description = "Возвращает токены пользователю"
+            description = "Возвращает токены пользователю. Refresh токен возвращается в Cookie"
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Пользователь успешно авторизован"),
@@ -66,15 +67,16 @@ public class UserController {
     })
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginDto,
-                                                  HttpServletRequest request) {
-        var login = userService.login(loginDto, request);
+                                                  HttpServletRequest request,
+                                                  HttpServletResponse response) {
+        var login = userService.login(loginDto, request, response);
 
         return new ResponseEntity<>(login, HttpStatus.OK);
     }
 
     @Operation(
             summary = "Обновление токенов",
-            description = "Возвращает новую пару токенов пользователю"
+            description = "Возвращает новую пару токенов пользователю. Refresh токен возвращается в Cookie"
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Токены успешно обновлены"),
@@ -83,8 +85,9 @@ public class UserController {
     })
     @PostMapping("/tokens/refresh")
     public ResponseEntity<RefreshTokenResponseDto> refresh(@RequestBody RefreshTokenRequestDto refreshDto,
-                                                           HttpServletRequest request) {
-        var refresh = userService.refresh(refreshDto, request);
+                                                           HttpServletRequest request,
+                                                           HttpServletResponse response) {
+        var refresh = userService.refresh(refreshDto, request, response);
 
         return new ResponseEntity<>(refresh, HttpStatus.OK);
     }

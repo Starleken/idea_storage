@@ -10,7 +10,4 @@ public class RefreshTokenResponseDto {
 
     @Schema(description = "Обновлённый access токен пользователя")
     private String accessToken;
-
-    @Schema(description = "Обновлённый refresh токен пользователя")
-    private String refreshToken;
 }

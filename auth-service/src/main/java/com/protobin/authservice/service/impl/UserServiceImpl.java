@@ -10,7 +10,9 @@ import com.protobin.authservice.service.EncodingService;
 import com.protobin.authservice.service.TokenService;
 import com.protobin.authservice.service.UserService;
 import com.protobin.authservice.utils.HttpUtils;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +50,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public LoginResponseDto login(LoginRequestDto loginDto, HttpServletRequest request) {
+    public LoginResponseDto login(LoginRequestDto loginDto, HttpServletRequest request,
+                                  HttpServletResponse response) {
         var found = userRepository.findByEmail(loginDto.getEmail())
                 .orElseThrow(() -> getEntityNotFoundException(UserEntity.class));
 
@@ -58,20 +61,28 @@ public class UserServiceImpl implements UserService {
 
         var requestInfo = parseRequestInfo(request);
 
+        createTokenCookie(response, tokenService.generateRefreshToken(found.getId(), requestInfo));
+
         return LoginResponseDto.builder()
                 .userId(found.getId())
                 .accessToken(tokenService.generateAccessToken(found.getId()))
-                .refreshToken(tokenService.generateRefreshToken(found.getId(), requestInfo))
                 .build();
     }
 
     @Override
-    public RefreshTokenResponseDto refresh(RefreshTokenRequestDto refreshDto, HttpServletRequest request) {
+    public RefreshTokenResponseDto refresh(RefreshTokenRequestDto refreshDto, HttpServletRequest request,
+                                           HttpServletResponse response) {
         var refreshToken = refreshDto.getRefreshToken();
 
         var requestInfo = parseRequestInfo(request);
 
-        return tokenService.refresh(refreshToken, requestInfo);
+        var tokenHolder = tokenService.refresh(refreshToken, requestInfo);
+
+        createTokenCookie(response, tokenHolder.getRefreshToken());
+
+        return RefreshTokenResponseDto.builder()
+                .accessToken(tokenHolder.getAccessToken())
+                .build();
     }
 
     @Override
@@ -131,5 +142,11 @@ public class UserServiceImpl implements UserService {
         if (found.isPresent()) {
             throwIllegalActionException("Username: " + username + " exists");
         }
+    }
+
+    private void createTokenCookie(HttpServletResponse response, String refreshToken) {
+        var cookie = new Cookie("refresh", refreshToken);
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
     }
 }

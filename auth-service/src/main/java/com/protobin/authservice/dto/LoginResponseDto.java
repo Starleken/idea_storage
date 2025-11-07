@@ -13,9 +13,6 @@ public class LoginResponseDto {
     @Schema(description = "UUID пользователя, прошедшего авторизацию")
     private UUID userId;
 
-    @Schema(description = "Выданный refresh токен")
-    private String refreshToken;
-
     @Schema(description = "Выданный access токен")
     private String accessToken;
 }
