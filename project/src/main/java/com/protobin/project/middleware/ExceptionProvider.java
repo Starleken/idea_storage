@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.UUID;
 
@@ -21,7 +22,16 @@ public class ExceptionProvider {
     public ResponseEntity<ResponseDto> handleException(NotFoundException exception) {
         log.error(exception.getMessage(), exception);
         return new ResponseEntity<>(
-                new ResponseDto(404, "Entity isnot found"),
+                new ResponseDto(404, "Entity is not found"),
+                HttpStatus.NOT_FOUND
+        );
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ResponseDto> handleException(NoResourceFoundException exception) {
+        log.error(exception.getMessage(), exception);
+        return new ResponseEntity<>(
+                new ResponseDto(404, "Page is not found"),
                 HttpStatus.NOT_FOUND
         );
     }

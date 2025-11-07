@@ -44,6 +44,6 @@ public class LoggerMiddleware implements Filter {
     }
 
     public void logError(HttpServletRequest request, String correlationId, Exception error) {
-        log.info("[ERROR][{}] {} {}: {}", correlationId, request.getMethod(), request.getRequestURI(), error.getMessage());
+        log.error("[ERROR][{}] {} {}: {}", correlationId, request.getMethod(), request.getRequestURI(), error.getMessage());
     }
 }
