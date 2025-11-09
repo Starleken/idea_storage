@@ -16,11 +16,16 @@ spring:
   output:
     ansi:
       enabled: always
+springdoc:
+  api-docs:
+    enabled: true
+    path: /docs
+  swagger-ui:
+    path: /swagger-ui.html
 logging:
   file:
-    name: application.log
-    path: /logs
+    name: ./logs/project-application.log
   pattern:
-    file: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'
+    file: '{"timestamp":"%d{yyyy-MM-dd HH:mm:ss.SSS}","level":"%-5level","thread":"%thread","logger":"%logger{36}","message":"%msg"}%n'
     console: '%clr(%d{HH:mm:ss.SSS}){faint} %clr(%-5level) %clr([%thread]){magenta} %clr(%logger{36}){cyan} %msg%n'
 

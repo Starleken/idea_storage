@@ -8,11 +8,8 @@
   <url>http://maven.apache.org</url>
   <packaging>pom</packaging>
   <modules>
-    <module>file-service</module>
-    <module>main-service</module>
-    <module>account-service</module>
-    <module>eureka-server</module>
-    <module>gateway-service</module>
-    <module>notification-service</module>
+    <module>project</module>
+    <module>auth-service</module>
+    <module>token-starter</module>
   </modules>
 </project>

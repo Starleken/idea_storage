@@ -1,13 +1,10 @@
 package com.protobin.project.mapper;
 
-import com.protobin.project.dto.ProjectCreateDto;
-import com.protobin.project.dto.ProjectResponseDto;
-import com.protobin.project.dto.ProjectUpdateDto;
+import com.protobin.project.dto.project.ProjectCreateDto;
+import com.protobin.project.dto.project.ProjectResponseDto;
+import com.protobin.project.dto.project.ProjectUpdateDto;
 import com.protobin.project.entity.ProjectEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-
-import java.lang.annotation.Target;
 
 @Mapper(componentModel = "spring")
 public interface ProjectMapper {

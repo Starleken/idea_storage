@@ -1,8 +1,8 @@
 package com.protobin.project.service.impl;
 
-import com.protobin.project.dto.ProjectCreateDto;
-import com.protobin.project.dto.ProjectResponseDto;
-import com.protobin.project.dto.ProjectUpdateDto;
+import com.protobin.project.dto.project.ProjectCreateDto;
+import com.protobin.project.dto.project.ProjectResponseDto;
+import com.protobin.project.dto.project.ProjectUpdateDto;
 import com.protobin.project.entity.ProjectEntity;
 import com.protobin.project.exception.NotFoundException;
 import com.protobin.project.mapper.ProjectMapper;
@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Service
@@ -53,8 +54,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     public void deleteById(UUID id) {
         var toDelete = getById(id);
-
-        projectRepository.deleteById(toDelete.getId());
+        toDelete.setDeletedAt(new Date().getTime());
+        projectRepository.save(toDelete);
     }
 
     private ProjectEntity getById(UUID id) {

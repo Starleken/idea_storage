@@ -1,9 +1,8 @@
 package com.protobin.project.service;
 
-import com.protobin.project.dto.ProjectCreateDto;
-import com.protobin.project.dto.ProjectResponseDto;
-import com.protobin.project.dto.ProjectUpdateDto;
-import org.springframework.stereotype.Service;
+import com.protobin.project.dto.project.ProjectCreateDto;
+import com.protobin.project.dto.project.ProjectResponseDto;
+import com.protobin.project.dto.project.ProjectUpdateDto;
 
 import java.util.UUID;
 

@@ -1,11 +1,9 @@
 package com.protobin.project.core;
 
-import com.protobin.project.dto.ProjectCreateDto;
-import com.protobin.project.dto.ProjectResponseDto;
-import com.protobin.project.dto.ProjectUpdateDto;
-import com.protobin.project.dto.ResponseDto;
+import com.protobin.project.dto.project.ProjectCreateDto;
+import com.protobin.project.dto.project.ProjectResponseDto;
+import com.protobin.project.dto.project.ProjectUpdateDto;
 import com.protobin.project.entity.ProjectEntity;
-import org.junit.jupiter.api.Assertions;
 
 import static org.junit.jupiter.api.Assertions.*;
 

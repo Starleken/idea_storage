@@ -9,21 +9,21 @@ services:
       - "TZ=UTC"
     ports:
       - "5433:5432"
-  redis_protobin:
-    image: "redis:6.0.16"
-    container_name: redis_protobin
-    command: ["redis-server", "--requirepass", "admin"]
-    ports:
-      - "6379:6379"
-  redis-commander-protobin:
-    image: rediscommander/redis-commander:latest
-    restart: always
-    environment:
-      REDIS_HOSTS: redis_protobin
-      REDIS_HOST: redis_protobin
-      REDIS_PORT: 6379
-      REDIS_PASSWORD: admin
-      HTTP_USER: root
-      HTTP_PASSWORD: root
-    ports:
-      - 8081:8081
+#  redis_protobin:
+#    image: "redis:6.0.16"
+#    container_name: redis_protobin
+#    command: ["redis-server", "--requirepass", "admin"]
+#    ports:
+#      - "6379:6379"
+#  redis-commander-protobin:
+#    image: rediscommander/redis-commander:latest
+#    restart: always
+#    environment:
+#      REDIS_HOSTS: redis_protobin
+#      REDIS_HOST: redis_protobin
+#      REDIS_PORT: 6379
+#      REDIS_PASSWORD: admin
+#      HTTP_USER: root
+#      HTTP_PASSWORD: root
+#    ports:
+#      - 8081:8081
