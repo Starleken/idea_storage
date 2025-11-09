@@ -1,20 +1,16 @@
-package com.protobin.project.dto;
+package com.protobin.project.dto.project;
 
 import com.protobin.project.entity.ProjectVisibleStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.UUID;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder
-@Schema(title = "Обновление проекта",
-        description = "Поля необходимые для обновления проекта")
-public class ProjectUpdateDto {
-    @Schema(description = "Идентификатор пользователя", example = "3fa85f64-5717-4562-b3fc-2c963f66afa6")
-    private UUID id;
-
+@Schema(title = "Создание проекта",
+        description = "Объект для создания проекта")
+public class ProjectCreateDto {
     @Schema(description = "Заголовок", example = "VoiceTok")
     private String title;
 
@@ -29,4 +25,5 @@ public class ProjectUpdateDto {
     @Schema(description = "Статус видимости проекта",
             example = "VISIBLE")
     private ProjectVisibleStatus visibleStatus;
+
 }

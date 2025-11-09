@@ -1,15 +1,20 @@
-package com.protobin.project.dto;
+package com.protobin.project.dto.project;
 
 import com.protobin.project.entity.ProjectVisibleStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 @Builder
-@Schema(title = "Создание проекта",
-        description = "Объект для создания проекта")
-public class ProjectCreateDto {
+@Schema(title = "Обновление проекта",
+        description = "Поля необходимые для обновления проекта")
+public class ProjectUpdateDto {
+    @Schema(description = "Идентификатор пользователя", example = "3fa85f64-5717-4562-b3fc-2c963f66afa6")
+    private UUID id;
+
     @Schema(description = "Заголовок", example = "VoiceTok")
     private String title;
 

@@ -1,7 +1,7 @@
 package com.protobin.project.core;
 
-import com.protobin.project.dto.ProjectCreateDto;
-import com.protobin.project.dto.ProjectUpdateDto;
+import com.protobin.project.dto.project.ProjectCreateDto;
+import com.protobin.project.dto.project.ProjectUpdateDto;
 
 import java.util.UUID;
 

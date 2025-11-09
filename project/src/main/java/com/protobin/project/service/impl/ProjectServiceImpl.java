@@ -1,8 +1,8 @@
 package com.protobin.project.service.impl;
 
-import com.protobin.project.dto.ProjectCreateDto;
-import com.protobin.project.dto.ProjectResponseDto;
-import com.protobin.project.dto.ProjectUpdateDto;
+import com.protobin.project.dto.project.ProjectCreateDto;
+import com.protobin.project.dto.project.ProjectResponseDto;
+import com.protobin.project.dto.project.ProjectUpdateDto;
 import com.protobin.project.entity.ProjectEntity;
 import com.protobin.project.exception.NotFoundException;
 import com.protobin.project.mapper.ProjectMapper;

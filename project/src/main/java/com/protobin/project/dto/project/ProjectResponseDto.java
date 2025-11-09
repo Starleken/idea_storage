@@ -1,4 +1,4 @@
-package com.protobin.project.dto;
+package com.protobin.project.dto.project;
 
 import com.protobin.project.entity.ProjectVisibleStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
