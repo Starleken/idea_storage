@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -58,7 +59,7 @@ public class FragmentController {
     @ApiResponseNotFound
     @ApiResponseNoAuth
     @ApiResponseForbidden
-    public ResponseEntity<FragmentResponseDto> create(@ModelAttribute FragmentCreateDto dto) {
+    public ResponseEntity<FragmentResponseDto> create(@ModelAttribute @Valid FragmentCreateDto dto) {
         var fragment = fragmentService.create(dto);
         return new ResponseEntity<>(fragment, HttpStatus.CREATED);
     }
@@ -74,7 +75,7 @@ public class FragmentController {
     @ApiResponseNotFound
     @ApiResponseNoAuth
     @ApiResponseForbidden
-    public ResponseEntity<FragmentResponseDto> update(@PathVariable UUID id, @RequestBody FragmentUpdateDto dto) {
+    public ResponseEntity<FragmentResponseDto> update(@PathVariable UUID id, @RequestBody @Valid FragmentUpdateDto dto) {
         var fragment = fragmentService.update(id, dto);
         return new ResponseEntity<>(fragment, HttpStatus.OK);
     }
