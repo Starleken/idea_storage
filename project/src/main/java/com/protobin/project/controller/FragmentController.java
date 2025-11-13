@@ -27,7 +27,6 @@ import java.util.UUID;
 @RequestMapping(path = "v1/fragments")
 @Tag(name = "Fragments", description = "Необходимые руты для работы с фрагментами")
 @RequiredArgsConstructor
-@Slf4j
 public class FragmentController {
 
     private final FragmentService fragmentService;

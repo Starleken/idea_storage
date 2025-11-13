@@ -121,11 +121,11 @@
 			<artifactId>postgresql</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>com.protobin</groupId>
             <artifactId>token-starter</artifactId>
             <version>1.0-SNAPSHOT</version>
-</dependency>
+        </dependency>-->
 	</dependencies>
 
 	<build>

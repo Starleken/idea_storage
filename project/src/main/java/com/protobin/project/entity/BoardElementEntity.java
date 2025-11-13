@@ -1,0 +1,51 @@
+package com.protobin.project.entity;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.protobin.project.entity.aware.CreatedAtTimestampAware;
+import com.protobin.project.entity.aware.UpdateAtTimestampAware;
+import com.protobin.project.entity.enums.BoardElementEntityType;
+import com.protobin.project.entity.listener.TimestampListener;
+import jakarta.persistence.*;
+import lombok.Data;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.util.UUID;
+
+@Entity
+@Data
+@Table(name = "board_elements")
+@EntityListeners({TimestampListener.class})
+public class BoardElementEntity implements CreatedAtTimestampAware, UpdateAtTimestampAware {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+    private ProjectEntity project;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "entity_type", nullable = false)
+    private BoardElementEntityType type;
+
+    @Column(name = "coordinate_x", nullable = false)
+    private float coordinateX;
+
+    @Column(name = "coordinate_y", nullable = false)
+    private float coordinateY;
+
+    @Column(name = "entity_id", nullable = false)
+    private String entityId;
+
+    @Column(name = "payload", nullable = false)
+    @JdbcTypeCode(SqlTypes.JSON)
+    private JsonNode payload;
+
+    @Column(name = "created_at", nullable = false)
+    private Long createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private Long updatedAt;
+}

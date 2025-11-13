@@ -1,7 +1,7 @@
 package com.protobin.project.core;
 
 import com.protobin.project.entity.ProjectEntity;
-import com.protobin.project.entity.ProjectVisibleStatus;
+import com.protobin.project.entity.enums.ProjectVisibleStatus;
 
 import java.util.Random;
 

@@ -2,11 +2,15 @@ package com.protobin.project.entity;
 
 import com.protobin.project.entity.aware.CreatedAtTimestampAware;
 import com.protobin.project.entity.aware.UpdateAtTimestampAware;
+import com.protobin.project.entity.enums.ProjectVisibleStatus;
 import com.protobin.project.entity.listener.TimestampListener;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -45,4 +49,9 @@ public class ProjectEntity implements CreatedAtTimestampAware, UpdateAtTimestamp
     @ManyToOne
     @JoinColumn(name = "organization_id", nullable = true)
     private OrganizationEntity organization;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<BoardElementEntity> boardElements = new ArrayList<>();
 }

@@ -1,19 +1,16 @@
 databaseChangeLog:
   - changeSet:
-      id: 9_create_boards_events
+      id: 9_create_board_elements
       author: betrayal
       changes:
         - sql:
-            sql: "CREATE TYPE board_type_action_enum AS ENUM ('move','drag','connect')"
-        - sql:
-            sql: "CREATE TYPE board_type_entity_enum AS ENUM ('fragment','comment','task')"
+            sql: "CREATE TYPE board_element_entity_type_enum AS ENUM ('FRAGMENT','COMMENT','TASK')"
         - createTable:
-            tableName: boards_events
+            tableName: board_elements
             columns:
               - column:
                   name: id
-                  type: BIGINT
-                  autoIncrement: true
+                  type: UUID
                   constraints:
                     nullable: false
                     primaryKey: true
@@ -25,23 +22,19 @@ databaseChangeLog:
                     references: projects(id)
                     foreignKeyName: fk_projects_participants
               - column:
-                  name: x
-                  type: float
-                  constraints:
-                    nullable: false
-              - column:
-                  name: y
-                  type: float
-                  constraints:
-                    nullable: false
-              - column:
-                  name: type
-                  type: board_type_action_enum
-                  constraints:
-                    nullable: false
-              - column:
                   name: entity_type
-                  type: board_type_entity_enum
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+                    checkConstraint: "check ((entity_type)::text = ANY ((ARRAY ['FRAGMENT'::character varying, 'COMMENT'::character varying, 'TASK'::character varying])::text[])),"
+              - column:
+                  name: coordinate_x
+                  type: float
+                  constraints:
+                    nullable: false
+              - column:
+                  name: coordinate_y
+                  type: float
                   constraints:
                     nullable: false
               - column:
@@ -52,5 +45,15 @@ databaseChangeLog:
               - column:
                   name: payload
                   type: JSONB
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: bigint
                   constraints:
                     nullable: false
