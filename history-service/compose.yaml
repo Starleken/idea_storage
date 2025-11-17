@@ -1,0 +1,10 @@
+services:
+  mongo_db:
+    image: mongo:4.4.27 # ← Только 4.4.x работает без AVX
+    container_name: mongo_db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: protobin
+      MONGO_INITDB_ROOT_PASSWORD: FU5mozkGyK0azOI6
+    ports:
+      - "27017:27017"
+    restart: unless-stopped

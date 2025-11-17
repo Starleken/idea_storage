@@ -56,4 +56,4 @@ databaseChangeLog:
                   name: updated_at
                   type: bigint
                   constraints:
-                    nullable: false
+                    nullable: true

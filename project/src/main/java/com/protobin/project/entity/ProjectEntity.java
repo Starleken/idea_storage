@@ -1,5 +1,6 @@
 package com.protobin.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.protobin.project.entity.aware.CreatedAtTimestampAware;
 import com.protobin.project.entity.aware.UpdateAtTimestampAware;
 import com.protobin.project.entity.enums.ProjectVisibleStatus;
@@ -40,7 +41,7 @@ public class ProjectEntity implements CreatedAtTimestampAware, UpdateAtTimestamp
     @Column(name = "created_at", nullable = false)
     private Long createdAt;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at", nullable = true)
     private Long updatedAt;
 
     @Column(name = "deleted_at", nullable = true)
@@ -51,6 +52,7 @@ public class ProjectEntity implements CreatedAtTimestampAware, UpdateAtTimestamp
     private OrganizationEntity organization;
 
     @EqualsAndHashCode.Exclude
+    @JsonIgnore
     @ToString.Exclude
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<BoardElementEntity> boardElements = new ArrayList<>();

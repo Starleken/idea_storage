@@ -50,7 +50,7 @@ databaseChangeLog:
                   name: updated_at
                   type: BIGINT
                   constraints:
-                    nullable: false
+                    nullable: true
               - column:
                   name: deleted_at
                   type: BIGINT

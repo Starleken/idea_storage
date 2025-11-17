@@ -1,9 +1,11 @@
 package com.protobin.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.protobin.project.entity.aware.CreatedAtTimestampAware;
 import com.protobin.project.entity.aware.UpdateAtTimestampAware;
 import com.protobin.project.entity.enums.BoardElementEntityType;
+import com.protobin.project.entity.listener.HistoryListener;
 import com.protobin.project.entity.listener.TimestampListener;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -15,7 +17,7 @@ import java.util.UUID;
 @Entity
 @Data
 @Table(name = "board_elements")
-@EntityListeners({TimestampListener.class})
+@EntityListeners({TimestampListener.class, HistoryListener.class})
 public class BoardElementEntity implements CreatedAtTimestampAware, UpdateAtTimestampAware {
 
     @Id
@@ -23,6 +25,7 @@ public class BoardElementEntity implements CreatedAtTimestampAware, UpdateAtTime
     private UUID id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "project_id", nullable = false)
     private ProjectEntity project;
 
@@ -46,6 +49,6 @@ public class BoardElementEntity implements CreatedAtTimestampAware, UpdateAtTime
     @Column(name = "created_at", nullable = false)
     private Long createdAt;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at", nullable = true)
     private Long updatedAt;
 }

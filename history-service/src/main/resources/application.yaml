@@ -1,0 +1,15 @@
+server:
+  port: 8081
+
+spring:
+  config:
+    import: file:.env[.properties]
+  application:
+    name: history-service
+  data:
+    mongodb:
+      uri: mongodb://${DATABASE_URL}/${DATABASE_SCHEMA}
+  kafka:
+    bootstrap-servers: ${KAFKA_URL}
+    consumer:
+      group-id: test-consumer-group

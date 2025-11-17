@@ -29,3 +29,5 @@ logging:
     file: '{"timestamp":"%d{yyyy-MM-dd HH:mm:ss.SSS}","level":"%-5level","thread":"%thread","logger":"%logger{36}","message":"%msg"}%n'
     console: '%clr(%d{HH:mm:ss.SSS}){faint} %clr(%-5level) %clr([%thread]){magenta} %clr(%logger{36}){cyan} %msg%n'
 
+history-service-starter:
+  kafka-url: localhost:9092
