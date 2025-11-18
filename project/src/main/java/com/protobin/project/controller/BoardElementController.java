@@ -13,20 +13,27 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "v1/elements")
 @Tag(name = "Board elements", description = "Необходимые руты для работы с элементами доски")
 @RequiredArgsConstructor
+@MessageMapping("/elements")
+@Slf4j
 public class BoardElementController {
 
     private final BoardElementService boardElementService;
+
+    private final SimpMessagingTemplate messagingTemplate;
 
     @GetMapping("/project/{projectId}")
     @Operation(
@@ -44,67 +51,30 @@ public class BoardElementController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping
-    @Operation(
-            summary = "Создать элемент доски",
-            description = "Создать элемент доски",
-            security = @SecurityRequirement(name = "bearerAuth")
-    )
-    @ApiResponse(responseCode = "201", description = "Элемент успешно создан")
-    @ApiResponseBadRequest
-    @ApiResponseNotFound
-    @ApiResponseNoAuth
-    @ApiResponseForbidden
-    public ResponseEntity<BoardElementResponseDto> create(@RequestBody BoardElementCreateDto createDto) {
+    @MessageMapping("/create/project/{projectId}")
+    public void create(BoardElementCreateDto createDto, @DestinationVariable UUID projectId) {
         var response = boardElementService.create(createDto);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        messagingTemplate.convertAndSend("/topic/element/create/project/" + projectId, response);
     }
 
-    @PutMapping
-    @Operation(
-            summary = "Обновить элемент доски по UUID",
-            description = "Обновить элемент доски",
-            security = @SecurityRequirement(name = "bearerAuth")
-    )
-    @ApiResponse(responseCode = "200", description = "Элемент успешно обновлён")
-    @ApiResponseBadRequest
-    @ApiResponseNotFound
-    @ApiResponseNoAuth
-    @ApiResponseForbidden
-    public ResponseEntity<BoardElementResponseDto> update(@RequestBody BoardElementUpdateDto updateDto) {
+    @MessageMapping("/update/project/{projectId}")
+    public void update(BoardElementUpdateDto updateDto, @DestinationVariable UUID projectId) {
         var response = boardElementService.update(updateDto);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+
+        messagingTemplate.convertAndSend("/topic/element/update/project/" + projectId, response);
     }
 
-    @DeleteMapping("/{id}")
-    @Operation(
-            summary = "Удалить элемент с доски по UUID",
-            description = "удалить элемент доски",
-            security = @SecurityRequirement(name = "bearerAuth")
-    )
-    @ApiResponse(responseCode = "200", description = "Элемент успешно удалён")
-    @ApiResponseBadRequest
-    @ApiResponseNotFound
-    @ApiResponseNoAuth
-    @ApiResponseForbidden
-    public ResponseEntity<Void> deleteById(@PathVariable UUID id) {
+    @MessageMapping("/delete/project/{projectId}")
+    public void deleteById(UUID id, @DestinationVariable UUID projectId) {
         boardElementService.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+
+        messagingTemplate.convertAndSend("/topic/element/delete/project/" + projectId, id);
     }
 
-    @DeleteMapping
-    @Operation(
-            summary = "Удалить список элементов по массиву UUID",
-            description = "удалить список элементов",
-            security = @SecurityRequirement(name = "bearerAuth")
-    )
-    @ApiResponse(responseCode = "200", description = "Элементы успешно удалены")
-    @ApiResponseBadRequest
-    @ApiResponseNotFound
-    @ApiResponseNoAuth
-    @ApiResponseForbidden
-    public ResponseEntity<Void> deleteByIds(@RequestBody List<UUID> ids) {
+    @MessageMapping("/delete/all/project/{projectId}")
+    public void deleteByIds(List<UUID> ids, @DestinationVariable UUID projectId) {
         boardElementService.deleteByIds(ids);
-        return new ResponseEntity<>(HttpStatus.OK);
+
+        messagingTemplate.convertAndSend("/topic/element/delete/all/project/" + projectId, "DELETED");
     }
 }

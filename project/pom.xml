@@ -31,6 +31,7 @@
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <javafaker.version>1.0.2</javafaker.version>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>jakarta.servlet</groupId>
@@ -121,15 +122,19 @@
 			<artifactId>postgresql</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <!--<dependency>
+        <dependency>
             <groupId>com.protobin</groupId>
             <artifactId>token-starter</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>-->
+        </dependency>
         <dependency>
             <groupId>com.protobin</groupId>
             <artifactId>history-starter</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
 	</dependencies>
 

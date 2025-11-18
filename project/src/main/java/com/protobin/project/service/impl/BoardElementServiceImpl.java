@@ -4,14 +4,12 @@ import com.protobin.project.dto.boardElement.BoardElementCreateDto;
 import com.protobin.project.dto.boardElement.BoardElementResponseDto;
 import com.protobin.project.dto.boardElement.BoardElementUpdateDto;
 import com.protobin.project.entity.BoardElementEntity;
-import com.protobin.project.entity.FragmentEntity;
 import com.protobin.project.entity.ProjectEntity;
 import com.protobin.project.exception.NotFoundException;
 import com.protobin.project.mapper.BoardElementMapper;
 import com.protobin.project.repository.BoardElementRepository;
 import com.protobin.project.repository.ProjectRepository;
 import com.protobin.project.service.BoardElementService;
-import liquibase.util.ExceptionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
