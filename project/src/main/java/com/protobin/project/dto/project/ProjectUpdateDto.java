@@ -1,6 +1,6 @@
 package com.protobin.project.dto.project;
 
-import com.protobin.project.entity.ProjectVisibleStatus;
+import com.protobin.project.entity.enums.ProjectVisibleStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;

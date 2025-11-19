@@ -1,0 +1,11 @@
+services:
+  mongo_db:
+    image: mongo:4.4.27
+    container_name: mongo_db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DATA_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${DATA_PASSWORD}
+    command: ["mongod", "--auth"]
+    ports:
+      - "27017:27017"
+    restart: unless-stopped
