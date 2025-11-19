@@ -9,6 +9,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
+import org.hibernate.type.SqlTypes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +38,9 @@ public class ProjectEntity implements CreatedAtTimestampAware, UpdateAtTimestamp
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "status_visible", nullable = false)
+    @Column(name = "visible_status", nullable = false, columnDefinition = "project_visible_status_enum")
     @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
     private ProjectVisibleStatus visibleStatus;
 
     @Column(name = "created_at", nullable = false)

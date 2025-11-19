@@ -4,7 +4,7 @@ databaseChangeLog:
       author: betrayal
       changes:
         - sql:
-            sql: "CREATE TYPE board_element_entity_type_enum AS ENUM ('FRAGMENT','COMMENT','TASK')"
+            sql: "CREATE TYPE board_element_entity_type_enum AS ENUM ('FRAGMENT','ARROW')"
         - createTable:
             tableName: board_elements
             columns:
@@ -23,10 +23,10 @@ databaseChangeLog:
                     foreignKeyName: fk_projects_participants
               - column:
                   name: entity_type
-                  type: VARCHAR(100)
+                  type: board_element_entity_type_enum
+                  defaultValue: 'FRAGMENT'
                   constraints:
                     nullable: false
-                    checkConstraint: "check ((entity_type)::text = ANY ((ARRAY ['FRAGMENT'::character varying, 'COMMENT'::character varying, 'TASK'::character varying])::text[])),"
               - column:
                   name: coordinate_x
                   type: float

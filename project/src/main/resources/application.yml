@@ -31,3 +31,6 @@ logging:
 
 history-service-starter:
   kafka-url: localhost:9092
+
+websocket:
+    ports: ${WEBSOCKET_PORTS}

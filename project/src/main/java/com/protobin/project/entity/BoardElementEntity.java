@@ -9,7 +9,9 @@ import com.protobin.project.entity.listener.HistoryListener;
 import com.protobin.project.entity.listener.TimestampListener;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.JdbcType;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
@@ -29,8 +31,9 @@ public class BoardElementEntity implements CreatedAtTimestampAware, UpdateAtTime
     @JoinColumn(name = "project_id", nullable = false)
     private ProjectEntity project;
 
+    @Column(name = "entity_type", nullable = false, columnDefinition = "board_element_entity_type_enum")
     @Enumerated(EnumType.STRING)
-    @Column(name = "entity_type", nullable = false)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
     private BoardElementEntityType type;
 
     @Column(name = "coordinate_x", nullable = false)

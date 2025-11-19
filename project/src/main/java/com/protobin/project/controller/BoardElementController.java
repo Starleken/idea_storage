@@ -27,7 +27,7 @@ import java.util.UUID;
 @RestController
 @Tag(name = "Board elements", description = "Необходимые руты для работы с элементами доски")
 @RequiredArgsConstructor
-@MessageMapping("/elements")
+@MessageMapping("/v1/board/elements")
 @Slf4j
 public class BoardElementController {
 
@@ -54,27 +54,27 @@ public class BoardElementController {
     @MessageMapping("/create/project/{projectId}")
     public void create(BoardElementCreateDto createDto, @DestinationVariable UUID projectId) {
         var response = boardElementService.create(createDto);
-        messagingTemplate.convertAndSend("/topic/element/create/project/" + projectId, response);
+        messagingTemplate.convertAndSend("/topic/board/element/create/project/" + projectId, response);
     }
 
     @MessageMapping("/update/project/{projectId}")
     public void update(BoardElementUpdateDto updateDto, @DestinationVariable UUID projectId) {
         var response = boardElementService.update(updateDto);
 
-        messagingTemplate.convertAndSend("/topic/element/update/project/" + projectId, response);
+        messagingTemplate.convertAndSend("/topic/board/element/update/project/" + projectId, response);
     }
 
     @MessageMapping("/delete/project/{projectId}")
     public void deleteById(UUID id, @DestinationVariable UUID projectId) {
         boardElementService.deleteById(id);
 
-        messagingTemplate.convertAndSend("/topic/element/delete/project/" + projectId, id);
+        messagingTemplate.convertAndSend("/topic/board/element/delete/project/" + projectId, id);
     }
 
     @MessageMapping("/delete/all/project/{projectId}")
     public void deleteByIds(List<UUID> ids, @DestinationVariable UUID projectId) {
         boardElementService.deleteByIds(ids);
 
-        messagingTemplate.convertAndSend("/topic/element/delete/all/project/" + projectId, "DELETED");
+        messagingTemplate.convertAndSend("/topic/board/element/delete/all/project/" + projectId, "DELETED");
     }
 }
