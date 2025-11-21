@@ -6,7 +6,7 @@ import com.protobin.project.dto.project.ProjectUpdateDto;
 import com.protobin.project.entity.ProjectEntity;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {TagMapper.class})
 public interface ProjectMapper {
 
     ProjectResponseDto mapToDto(ProjectEntity entity);

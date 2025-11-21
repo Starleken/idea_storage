@@ -61,4 +61,9 @@ public class ProjectEntity implements CreatedAtTimestampAware, UpdateAtTimestamp
     @ToString.Exclude
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<BoardElementEntity> boardElements = new ArrayList<>();
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<TagEntity> tags = new ArrayList<>();
 }

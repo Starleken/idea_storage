@@ -8,10 +8,8 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: BIGINT
-                  autoIncrement: true
+                  type: UUID
                   constraints:
-                    nullable: false
                     primaryKey: true
               - column:
                   name: project_id
@@ -21,7 +19,7 @@ databaseChangeLog:
                     references: projects(id)
                     foreignKeyName: 'fk_projects_tags'
               - column:
-                  name: value
+                  name: name
                   type: VARCHAR(40)
                   constraints:
                     nullable: false
@@ -31,6 +29,6 @@ databaseChangeLog:
                   constraints:
                     nullable: false
         - addUniqueConstraint:
-            columnNames: "project_id, value"
+            columnNames: "project_id, name"
             constraintName: "uq_tags_projects"
             tableName: tags

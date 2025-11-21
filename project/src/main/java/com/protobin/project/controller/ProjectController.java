@@ -61,6 +61,30 @@ public class ProjectController {
                 .body(found.items());
     }
 
+    @GetMapping("/tags")
+    @Operation(
+            summary = "Получить проекты по тэгам",
+            description = "Получить все проекты, включающие указанные тэги",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @ApiResponse(responseCode = "200", description = "Были получены проекты" )
+    @ApiResponseNoAuth
+    @ApiResponseForbidden
+    @ApiResponseNotFound
+    public ResponseEntity<List<ProjectResponseDto>> findAllByTags(
+            @RequestBody List<String> tagsName,
+            @RequestParam(name = PaginationConstants.LIMIT, defaultValue = "10") @Min(0) Integer limit,
+            @RequestParam(name = PaginationConstants.PAGE, defaultValue = "0") @Min(0) Integer page) {
+        var pagination = new PaginationParams(limit, page);
+        var found = projectService.findAllByTags(tagsName, pagination);
+
+        return ResponseEntity.ok()
+                .header(PaginationConstants.HEADER_TOTAL_COUNT, found.total().toString())
+                .header(PaginationConstants.HEADER_LIMIT, pagination.limit().toString())
+                .header(PaginationConstants.HEADER_PAGE, pagination.page().toString())
+                .body(found.items());
+    }
+
     @GetMapping("/{id}")
     @Operation(
             summary = "Получить проект по UUID",

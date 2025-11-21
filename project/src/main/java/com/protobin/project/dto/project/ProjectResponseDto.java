@@ -1,9 +1,11 @@
 package com.protobin.project.dto.project;
 
+import com.protobin.project.dto.tag.TagResponseDto;
 import com.protobin.project.entity.enums.ProjectVisibleStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -28,4 +30,6 @@ public class ProjectResponseDto {
     @Schema(description = "Статус видимости проекта",
             example = "VISIBLE")
     private ProjectVisibleStatus visibleStatus;
+
+    private List<TagResponseDto> tags;
 }
